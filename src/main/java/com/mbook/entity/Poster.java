@@ -1,51 +1,56 @@
 package com.mbook.entity;
 
-import java.util.List;
+import java.util.*;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "poster")
 public class Poster extends BaseEntity {
 
+	@Column(name = "title")
 	private String title;
 
-	private String category;
-
+	@Column(name = "sub")
 	private String sub;
-	
+
+	@Column(name = "content")
 	private String content;
-
-	private String url;
-
-	public Poster() {
-	}
-
-	public Poster(String title, String category, String sub, String content, String url) {
-		super();
-		this.title = title;
-		this.category = category;
-		this.sub = sub;
-		this.content = content;
-		this.url = url;
-	}
 	
+	@Column(name = "urlImage")
+	private String urlImage;
+	
+	@ManyToMany
+    @JoinTable(
+            name = "category_enrolled",
+            joinColumns = @JoinColumn(name = "poster_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id")
+    )
+	private List<CategoryEntity> categoryId = new ArrayList<CategoryEntity>();
+	
+	public List<CategoryEntity> getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(List<CategoryEntity> categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
+
 	public String getTitle() {
 		return title;
 	}
 
-	
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getSub() {
@@ -64,11 +69,4 @@ public class Poster extends BaseEntity {
 		this.content = content;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
 }

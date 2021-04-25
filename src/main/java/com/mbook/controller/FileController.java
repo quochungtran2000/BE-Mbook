@@ -1,11 +1,6 @@
 package com.mbook.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -21,18 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.mbook.entity.Account;
 import com.mbook.entity.FileDB;
 import com.mbook.entity.Poster;
 import com.mbook.reponse.ResponseFile;
-import com.mbook.reponse.ResponseMessage;
 import com.mbook.service.FileStorageService;
 
 
@@ -63,7 +51,9 @@ public class FileController {
 //  }
   @PostMapping("/upload")
   public ResponseEntity<?> uploadFile(@RequestBody Poster post) {
-	  System.out.println("FILE : " + post);
+	  System.out.println("FILE : " + post.getTitle());
+	  System.out.println("FILE : " + post.getContent());
+	  System.out.println("FILE : " + post.getUrlImage());
 //	  if(post != null) {
 //		  System.out.println("\n\n\n File \n\n\n");
 //		  try {

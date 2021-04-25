@@ -52,7 +52,6 @@ public class AccountController {
 	public Account login(@RequestBody User data) {
 		List<Account> list = AccService.ListAll();
 		Long accID = null;
-		
 		for (Account account : list) {
 			if(account.getUsername().equals(data.getUsername())&& account.getPassword().equals(data.getPassword())) {
 				System.out.println("Login Success");

@@ -10,8 +10,10 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class BaseEntity {
-	
+	@Id
+	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String createdby;
 	
 	private Date createddate;
@@ -21,8 +23,7 @@ public class BaseEntity {
 	private Date modifieddate;
 	
 	
-	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY)
+	
 	public Long getId() {
 		return id;
 	}

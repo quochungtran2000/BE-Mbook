@@ -1,6 +1,5 @@
 package com.mbook.entity;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,53 +11,69 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "files")
 public class FileDB {
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  private String id;
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	private String id;
 
-  private String name;
+	private String name;
 
-  private String type;
+//	@ManyToMany
+//	@JoinTable(name = "category_enrolled", joinColumns = @JoinColumn(name = "poster_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+//	private Set<CategoryEntity> categoryId = new HashSet<>();
+//
+//	public Set<CategoryEntity> getCategoryId() {
+//		return categoryId;
+//	}
+//
+//	public void setCategoryId(Set<CategoryEntity> categoryId) {
+//		this.categoryId = categoryId;
+//	}
 
-  @Lob
-  private byte[] data;
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public FileDB() {
-  }
+	private String type;
 
-  public FileDB(String name, String type, byte[] data) {
-    this.name = name;
-    this.type = type;
-    this.data = data;
-  }
+	@Lob
+	private byte[] data;
 
-  public String getId() {
-    return id;
-  }
+	public FileDB() {
+	}
 
-  public String getName() {
-    return name;
-  }
+	public FileDB(String name, String type, byte[] data) {
+		this.name = name;
+		this.type = type;
+		this.data = data;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public byte[] getData() {
-    return data;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setData(byte[] data) {
-    this.data = data;
-  }
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
 
 }
