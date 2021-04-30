@@ -37,10 +37,14 @@ public class PosterService implements PosterServiceInterface{
 //	}
 	@Override
 	public Poster save(PosterDTO postDTO) {
+		System.out.print(postDTO);
 		Poster postEntity = new Poster();
 		CategoryEntity categoryEntity =  categoryRepository.findOneByCode(postDTO.getCategoryCode());
 		postEntity.getCategoryId().add(categoryEntity);
-		postEntity = PosterRepo.save(postEntity);
+		System.out.print("/////////////////////");
+		System.out.print(postEntity);
+//		postEntity = PosterRepo.save(postEntity);
+		
 		return postEntity;
 	}
 
