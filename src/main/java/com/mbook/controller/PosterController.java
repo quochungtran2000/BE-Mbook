@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mbook.convert.PosterConvert;
 import com.mbook.dto.PosterDTO;
-import com.mbook.entity.Account;
 import com.mbook.entity.CategoryEntity;
 import com.mbook.entity.Poster;
 import com.mbook.repository.CategoryRepository;
@@ -32,8 +30,6 @@ public class PosterController {
 	private CategoryRepository cateRepo;
 	@Autowired
 	private PosterRepository posterRepo;
-	@Autowired
-	private PosterConvert convertPost;
 	@GetMapping("/get")
 	public List<Poster> list() {
 		return posterService.ListAll();
