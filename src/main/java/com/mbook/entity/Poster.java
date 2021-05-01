@@ -17,9 +17,12 @@ public class Poster extends BaseEntity {
 
 	@Column(name = "content")
 	private String content;
-	
+
 	@Column(name = "urlImage")
 	private String urlImage;
+	
+	@Column(name = "createddate")
+	private Date createddate;
 	
 	@ManyToMany
     @JoinTable(
@@ -67,6 +70,14 @@ public class Poster extends BaseEntity {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Date getCreateddate() {
+		return createddate;
+	}
+
+	public void setCreateddate(Date createddate) {
+		this.createddate = createddate;
 	}
 
 }
