@@ -1,5 +1,7 @@
 package com.mbook.dto;
 
+import java.util.Date;
+
 import com.mbook.entity.BaseEntity;
 
 public class PosterDTO extends BaseEntity{
@@ -7,8 +9,15 @@ public class PosterDTO extends BaseEntity{
 	private String sub;
 	private String content;
 	private String categoryCode;
+	private Date createddate;
 	public String getTitle() {
 		return title;
+	}
+	public Date getCreateddate() {
+		return createddate;
+	}
+	public void setCreateddate(Date createddate) {
+		this.createddate = createddate;
 	}
 	public void setTitle(String title) {
 		this.title = title;

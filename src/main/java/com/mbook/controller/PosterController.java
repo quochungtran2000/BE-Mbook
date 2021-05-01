@@ -3,6 +3,8 @@ package com.mbook.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,10 @@ public class PosterController {
 	@Autowired
 	private PosterRepository posterRepo;
 	@GetMapping("/get")
-	public List<Poster> list() {
-		return posterService.ListAll();
+	public ResponseEntity<List<Poster>> list() {
+//		return posterService.ListAll();
+//		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		return new ResponseEntity<>(posterService.ListAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")

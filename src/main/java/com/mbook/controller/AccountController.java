@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mbook.entity.Account;
 import com.mbook.entity.User;
+import com.mbook.jwt.config.UserDetailService;
+import com.mbook.jwt.model.AuthenticationRequest;
+import com.mbook.jwt.model.AuthenticationResponse;
+import com.mbook.jwt.util.JwtUtil;
 import com.mbook.service.AccountService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
@@ -27,7 +34,13 @@ public class AccountController {
 
 	@Autowired
 	private AccountService AccService;
-	
+
+	@Autowired
+	private JwtUtil jwtTokenUtil;
+
+	@Autowired
+	private UserDetailService userDetailsService;
+
 	@GetMapping("")
 	public List<Account> list() {
 		return AccService.ListAll();
@@ -37,6 +50,7 @@ public class AccountController {
 	public Account get(@PathVariable Long id) {
 		return AccService.get(id);
 	}
+
 	// Đăng nhập
 	@PostMapping("/signin")
 	public Account login(@RequestBody User data) {
@@ -44,25 +58,22 @@ public class AccountController {
 		Long accID = null;
 		for (Account account : list) {
 			if(account.getUsername().equals(data.getUsername())&& account.getPassword().equals(data.getPassword())) {
-				System.out.println("Login Success");
+//				System.out.println("Login Success");
+				account.setToken(jwtTokenUtil.generateTokenAcc(account));
 				accID = account.getId();
-			}else {
-				System.out.println("Not Matching");
-			}	
+			}
 		}
+		System.out.println("Login Account  :" + AccService.get(accID));
 		return AccService.get(accID);
 	}
-	
-	
-	
 	// Đăng kí
 	@PostMapping("/signup")
 	public ResponseEntity<?> add(@RequestBody Account acc) {
 		try {
 			List<Account> list = AccService.ListAll();
 			for (Account account : list) {
-				if(account.getUsername().equals(acc.getUsername())) {
-					
+				if (account.getUsername().equals(acc.getUsername())) {
+
 					System.out.println("Be Existed");
 					return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 				}
@@ -75,15 +86,14 @@ public class AccountController {
 		}
 		return null;
 	}
-	
-	// Đổi mật khẩu 
+
+	// Đổi mật khẩu
 	@PostMapping("/changepassword")
 	public Account login(@RequestBody Account data) {
 		AccService.save(data);
 		return AccService.get(data.getId());
 	}
-	
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@RequestBody Account accNew, @PathVariable Long id) {
 		try {

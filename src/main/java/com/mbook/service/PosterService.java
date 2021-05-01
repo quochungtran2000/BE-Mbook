@@ -37,15 +37,11 @@ public class PosterService implements PosterServiceInterface{
 //	}
 	@Override
 	public Poster save(PosterDTO postDTO) {
-		System.out.print(postDTO);
 		Poster postEntity = new Poster();
-		CategoryEntity categoryEntity =  categoryRepository.findOneByCode(postDTO.getCategoryCode());
+		CategoryEntity categoryEntity =   categoryRepository.findOneByCode(postDTO.getCategoryCode());
+		postEntity = convertPost.toEntity(postDTO);
 		postEntity.getCategoryId().add(categoryEntity);
-		System.out.print("/////////////////////");
-		System.out.print(postEntity);
-//		postEntity = PosterRepo.save(postEntity);
-		
-		return postEntity;
+		return PosterRepo.save(postEntity);
 	}
 
 	@Override
@@ -55,7 +51,7 @@ public class PosterService implements PosterServiceInterface{
 
 	@Override
 	public void delete(Long id) {
-		PosterRepo.deleteById(id);;
+		PosterRepo.deleteById(id);
 		
 	}
 

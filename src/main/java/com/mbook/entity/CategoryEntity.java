@@ -1,8 +1,8 @@
 package com.mbook.entity;
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,15 +26,13 @@ public class CategoryEntity extends BaseEntity {
 
 	 @JsonIgnore
 	 @ManyToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	 private Set<Poster> posts = new HashSet<>();
+	 private List<Poster> posts = new ArrayList<Poster>();
 	 
-
-
-	public Set<Poster> getPosts() {
+	public List<Poster> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(Set<Poster> posts) {
+	public void setPosts(List<Poster> posts) {
 		this.posts = posts;
 	}
 

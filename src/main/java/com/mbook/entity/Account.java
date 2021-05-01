@@ -9,6 +9,13 @@ public class Account extends BaseEntity{
 	private String fullname;
 	private int status;
 	private Long roleid;
+	private String token;
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	public Account() {
 	}
 	public String getUsername() {
