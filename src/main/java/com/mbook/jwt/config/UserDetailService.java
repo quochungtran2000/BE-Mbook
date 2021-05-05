@@ -19,7 +19,7 @@ public class UserDetailService implements UserDetailsService {
 	@Autowired
 	AccountService AccService;
     @Override
-    //Tìm user
+    //Tìm và chứng thực user với database
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        Account user = repo.findOneByUsername(username);
        if(user == null) throw new UsernameNotFoundException(username);

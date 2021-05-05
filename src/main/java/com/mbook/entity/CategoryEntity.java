@@ -22,7 +22,6 @@ public class CategoryEntity extends BaseEntity {
 
 	@Column(name = "name")
 	private String name;
-	
 
 	 @JsonIgnore
 	 @ManyToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
