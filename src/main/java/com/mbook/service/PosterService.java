@@ -1,6 +1,9 @@
 package com.mbook.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +41,14 @@ public class PosterService implements PosterServiceInterface{
 	@Override
 	public Poster save(PosterDTO postDTO) {
 		Poster postEntity = new Poster();
-		CategoryEntity categoryEntity =   categoryRepository.findOneByCode(postDTO.getCategoryCode());
+		List<CategoryEntity> newList = new ArrayList<CategoryEntity>();
+		for (String item : postDTO.getCategoryCode()) {
+			CategoryEntity categoryEntity = categoryRepository.findOneByCode(item);
+			newList.add(categoryEntity);
+		}
 		postEntity = convertPost.toEntity(postDTO);
-		postEntity.getCategoryId().add(categoryEntity);
+		postEntity.setCategoryId(newList);
+		
 		return PosterRepo.save(postEntity);
 	}
 

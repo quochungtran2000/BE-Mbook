@@ -1,7 +1,18 @@
 package com.mbook.entity;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -20,10 +31,18 @@ public class Poster extends BaseEntity {
 
 	@Column(name = "urlImage")
 	private String urlImage;
+
 	
-	@Column(name = "createddate")
-	private Date createddate;
 	
+	@ManyToMany
+    @JoinTable(
+            name = "listpost_like",
+            joinColumns = @JoinColumn(name = "poster_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id",referencedColumnName = "id")
+    )
+	List<Account> listlike = new ArrayList<Account>();
+	
+//	@ManyToMany(mappedBy = "roles")
 	@ManyToMany
     @JoinTable(
             name = "category_enrolled",
@@ -32,6 +51,7 @@ public class Poster extends BaseEntity {
     )
 	private List<CategoryEntity> categoryId = new ArrayList<CategoryEntity>();
 	
+
 	public List<CategoryEntity> getCategoryId() {
 		return categoryId;
 	}
@@ -72,12 +92,15 @@ public class Poster extends BaseEntity {
 		this.content = content;
 	}
 
-	public Date getCreateddate() {
-		return createddate;
+	public List<Account> getListlike() {
+		return listlike;
 	}
 
-	public void setCreateddate(Date createddate) {
-		this.createddate = createddate;
+	public void setListlike(List<Account> listlike) {
+		this.listlike = listlike;
 	}
 
+	
+
+	
 }

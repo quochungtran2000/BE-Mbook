@@ -1,6 +1,8 @@
 package com.mbook.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.mbook.entity.BaseEntity;
 
@@ -8,7 +10,7 @@ public class PosterDTO extends BaseEntity{
 	private String title;
 	private String sub;
 	private String content;
-	private String categoryCode;
+	private List<String> categoryCode = new ArrayList<String>();
 	private Date createddate;
 	public String getTitle() {
 		return title;
@@ -34,10 +36,11 @@ public class PosterDTO extends BaseEntity{
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getCategoryCode() {
+	
+	public List<String> getCategoryCode() {
 		return categoryCode;
 	}
-	public void setCategoryCode(String categoryCode) {
+	public void setCategoryCode(List<String> categoryCode) {
 		this.categoryCode = categoryCode;
 	}
 	public String getUrlImage() {

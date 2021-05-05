@@ -3,11 +3,14 @@ package com.mbook.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbook.entity.Account;
+import com.mbook.entity.Password;
 import com.mbook.entity.User;
 import com.mbook.jwt.config.UserDetailService;
 import com.mbook.jwt.model.AuthenticationRequest;
 import com.mbook.jwt.model.AuthenticationResponse;
 import com.mbook.jwt.util.JwtUtil;
+import com.mbook.repository.AccountRepository;
 import com.mbook.service.AccountService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
@@ -34,13 +39,15 @@ public class AccountController {
 
 	@Autowired
 	private AccountService AccService;
-
+	
+	@Autowired
+	private AccountRepository AccRepo;
+	
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 
 	@Autowired
-	private UserDetailService userDetailsService;
-
+	private JwtUtil jwtUtil;
 	@GetMapping("")
 	public List<Account> list() {
 		return AccService.ListAll();
@@ -89,9 +96,21 @@ public class AccountController {
 
 	// Đổi mật khẩu
 	@PostMapping("/changepassword")
-	public Account login(@RequestBody Account data) {
-		AccService.save(data);
-		return AccService.get(data.getId());
+	public ResponseEntity<Account> login(@RequestBody Password data,HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("Authorization");
+		String jwt = authorizationHeader.substring(7);
+		String username = jwtUtil.extractUsername(jwt);
+		Account acc = AccRepo.findOneByUsername(username);
+		if(acc.getPassword() != data.getPasswordOld()) {
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //Mật khẩu cũ chưa đúng return 304
+		}else {
+			if( acc.getPassword() == data.getPasswordNew()) { 
+				return new ResponseEntity<>(HttpStatus.CONFLICT); // Mật khẩu mới == mật khẩu cũ return 409
+			}else {
+				acc.setPassword(data.getPasswordNew());
+				return ResponseEntity.status(HttpStatus.OK).body(AccRepo.save(acc)); //200
+			}
+		}
 	}
 
 	@PutMapping("/{id}")

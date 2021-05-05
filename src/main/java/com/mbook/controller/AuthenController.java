@@ -41,7 +41,6 @@ public class AuthenController {
 		}
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
-		System.out.print("jwt: " + jwt);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 }

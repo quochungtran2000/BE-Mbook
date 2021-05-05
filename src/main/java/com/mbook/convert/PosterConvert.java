@@ -15,7 +15,9 @@ public class PosterConvert {
 		posterDTO.setSub(posterEntity.getSub());
 		posterDTO.setUrlImage(posterEntity.getUrlImage());
 		posterDTO.setCreateddate(posterEntity.getCreateddate());
-//		posterDTO.setCategoryCode(posterEntity.getCategoryId().toString());
+		posterDTO.setCreatedby(posterEntity.getCreatedby().toString());
+		posterDTO.setModifieddate(posterEntity.getModifieddate());
+		posterDTO.setModifiedby(posterEntity.getModifiedby());
 		return posterDTO;
 	}
 	public Poster toEntity(PosterDTO posterDTO) {
@@ -23,9 +25,12 @@ public class PosterConvert {
 		posterEntity.setTitle(posterDTO.getTitle());
 		posterEntity.setContent(posterDTO.getContent());
 		posterEntity.setSub(posterDTO.getSub());
+		posterEntity.setCategoryId(posterEntity.getCategoryId());
 		posterEntity.setUrlImage(posterDTO.getUrlImage());
 		posterEntity.setCreateddate(posterDTO.getCreateddate());
-//		posterEntity.setCategoryId(posterDTO.getCategoryCode());
+		posterEntity.setCreatedby(posterDTO.getCreatedby().toString());
+		posterEntity.setModifieddate(posterDTO.getModifieddate());
+		posterEntity.setModifiedby(posterDTO.getModifiedby());
 		return posterEntity;
 	}
 }

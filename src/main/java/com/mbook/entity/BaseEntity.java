@@ -2,6 +2,7 @@ package com.mbook.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,12 +15,16 @@ public class BaseEntity {
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "createdby")
 	private String createdby;
 	
+	@Column(name = "createddate")
 	private Date createddate;
 	
+	@Column(name = "modifiedby")
 	private String modifiedby;
 	
+	@Column(name = "modifieddate")
 	private Date modifieddate;
 	
 	
