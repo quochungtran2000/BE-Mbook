@@ -25,7 +25,6 @@ public class PosterConvert {
 		posterEntity.setTitle(posterDTO.getTitle());
 		posterEntity.setContent(posterDTO.getContent());
 		posterEntity.setSub(posterDTO.getSub());
-		posterEntity.setCategoryId(posterEntity.getCategoryId());
 		posterEntity.setUrlImage(posterDTO.getUrlImage());
 		posterEntity.setCreateddate(posterDTO.getCreateddate());
 		posterEntity.setCreatedby(posterDTO.getCreatedby().toString());

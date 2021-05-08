@@ -101,15 +101,17 @@ public class AccountController {
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		Account acc = AccRepo.findOneByUsername(username);
-		if(acc.getPassword() != data.getPasswordOld()) {
-			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //Mật khẩu cũ chưa đúng return 304
-		}else {
-			if( acc.getPassword() == data.getPasswordNew()) { 
+		System.out.print("mật khẩu cũ : " + data.getPasswordOld());
+		if(acc.getPassword().contains(data.getPasswordOld())) {
+			if(acc.getPassword() == data.getPasswordNew()) { 
 				return new ResponseEntity<>(HttpStatus.CONFLICT); // Mật khẩu mới == mật khẩu cũ return 409
 			}else {
 				acc.setPassword(data.getPasswordNew());
 				return ResponseEntity.status(HttpStatus.OK).body(AccRepo.save(acc)); //200
 			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //Mật khẩu cũ chưa đúng return 304
+			
 		}
 	}
 
