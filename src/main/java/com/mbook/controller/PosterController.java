@@ -1,16 +1,13 @@
 package com.mbook.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +20,6 @@ import com.mbook.dto.PosterDTO;
 import com.mbook.entity.Account;
 import com.mbook.entity.CategoryEntity;
 import com.mbook.entity.Poster;
-import com.mbook.jwt.model.AuthenticationResponse;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.AccountRepository;
 import com.mbook.repository.CategoryRepository;
@@ -63,7 +59,6 @@ public class PosterController {
 		String username = jwtUtil.extractUsername(jwt);
 		data.setCreatedby(username);
 		return posterService.save(data);
-//		return;
 	}
 	
 
