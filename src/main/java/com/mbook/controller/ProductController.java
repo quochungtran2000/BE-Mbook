@@ -38,6 +38,10 @@ public class ProductController {
 	public ResponseEntity<List<Product>> all() {
 		return new ResponseEntity<>(productRepo.findAll(), HttpStatus.OK);
 	}
+	@GetMapping("/")
+	public ResponseEntity<List<Product>> getAll() {
+		return new ResponseEntity<>(productRepo.findAll(), HttpStatus.OK);
+	}
 	@GetMapping("/details/{productID}")
 	public ResponseEntity<Product> get(@PathVariable Long productID) {
 		return ResponseEntity.status(HttpStatus.OK).body(productRepo.getOne(productID));
