@@ -28,22 +28,35 @@ public class AuthorController {
 	AuthorRepository repo;
 	@Autowired
 	private JwtUtil jwtUtil;
-	
-	
-	@GetMapping("")
+
+	@GetMapping("/get")
 	public ResponseEntity<List<Author>> all() {
 		return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
 	}
+
 	@GetMapping("/details/{AuthorId}")
 	public ResponseEntity<Author> get(@PathVariable Long AuthorId) {
 		return ResponseEntity.status(HttpStatus.OK).body(repo.getOne(AuthorId));
 	}
-	@PostMapping("")
-	public ResponseEntity<Author> CreateAuthor(@Validated @RequestBody Author data, HttpServletRequest request) {
+
+	@PostMapping("/upload")
+	public String CreateAuthor(@Validated @RequestBody Author data, HttpServletRequest request) {
+		List<Author> list = repo.findAll();
+		for (Author item : list) {
+			if (item.getName().equals(data.getName())) {
+				return "Tác Giả Đã Tồn Tại";
+			}
+		}
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
+
+		System.out.println("name : " + data.getName());
+		System.out.println("name : " + data.getProductList());
+		System.out.println("desciption : " + data.getDescription());
 		data.setCreatedby(username);
-		return ResponseEntity.status(HttpStatus.OK).body(repo.save(data));
+		repo.save(data);
+		return "Thêm Tác Giả Thành Công";
+
 	}
 }

@@ -17,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "category")
 public class CategoryEntity extends BaseEntity {
 
-	@Column(name = "code")
-	private String code;
 
 	@Column(name = "name")
 	private String name;
@@ -27,21 +25,26 @@ public class CategoryEntity extends BaseEntity {
 	 @ManyToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	 private List<Poster> posts = new ArrayList<Poster>();
 	 
+	 @JsonIgnore
+	 @ManyToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	 private List<Product> products = new ArrayList<Product>();
+	 
 	public List<Poster> getPosts() {
 		return posts;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public void setPosts(List<Poster> posts) {
 		this.posts = posts;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 	
 
 	public String getName() {
