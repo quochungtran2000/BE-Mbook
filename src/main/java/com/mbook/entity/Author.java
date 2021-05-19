@@ -25,29 +25,30 @@ public class Author extends BaseEntity{
 	private String description;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "author", fetch=FetchType.EAGER)
-	List<Product> product;
+	@OneToMany(mappedBy = "author")
+	List<Product> productList;
 
 	public Author() {
 		super();
 	}
 
-	public Author(String name, String age, String slogan, String image, String description, List<Product> product) {
+	public Author(String name, String age, String slogan, String image, String description, List<Product> productList) {
 		super();
 		this.name = name;
 		this.age = age;
 		this.slogan = slogan;
 		this.image = image;
 		this.description = description;
-		this.product = product;
+		this.productList = productList;
 	}
 
-	public List<Product> getProduct() {
-		return product;
+
+	public List<Product> getProductList() {
+		return productList;
 	}
 
-	public void setProduct(List<Product> product) {
-		this.product = product;
+	public void setProductList(List<Product> productList) {
+		this.productList = productList;
 	}
 
 	public String getName() {

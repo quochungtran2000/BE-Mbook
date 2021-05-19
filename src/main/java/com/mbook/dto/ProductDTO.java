@@ -1,55 +1,74 @@
 package com.mbook.dto;
 
-public class ProductDTO {
+import com.mbook.entity.BaseDTO;
+
+public class ProductDTO extends BaseDTO{
 	
 	private String name;
-	private String image;
-	private String imageDetail;
+	private String imageBef;
+	private String imageAf;
 	private String quantity;
 	private String description;
+	private String thumbnails;
 	private int rating;
 	private boolean hot;
 	private boolean sale;
 	private Long priceOld;
 	private Long pricePresent;
-	private Long authorId;
-	private String createdBy;
+	private String authorName;
+	private String category;
 	public ProductDTO() {
 		super();
 	}
-	public ProductDTO(String name, String image, String imageDetail, String quantity, String description, int rating,
-			boolean hot, boolean sale, Long priceOld, Long pricePresent, Long authorId, String createdBy) {
+	
+	public ProductDTO(String name, String imageBef, String imageAf, String quantity, String description,
+			String thumbnails, int rating, boolean hot, boolean sale, Long priceOld, Long pricePresent,
+			String authorName, String category) {
 		super();
 		this.name = name;
-		this.image = image;
-		this.imageDetail = imageDetail;
+		this.imageBef = imageBef;
+		this.imageAf = imageAf;
 		this.quantity = quantity;
 		this.description = description;
+		this.thumbnails = thumbnails;
 		this.rating = rating;
 		this.hot = hot;
 		this.sale = sale;
 		this.priceOld = priceOld;
 		this.pricePresent = pricePresent;
-		this.authorId = authorId;
-		this.createdBy = createdBy;
+		this.authorName = authorName;
+		this.category = category;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public String getThumbnails() {
+		return thumbnails;
 	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setThumbnails(String thumbnails) {
+		this.thumbnails = thumbnails;
 	}
-
 	public String getName() {
 		return name;
 	}
-	public String getImage() {
-		return image;
+	public String getImageBef() {
+		return imageBef;
 	}
-	public String getImageDetail() {
-		return imageDetail;
+	public String getCategory() {
+		return category;
+	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getImageAf() {
+		return imageAf;
+	}
+	public void setImageBef(String imageBef) {
+		this.imageBef = imageBef;
+	}
+	public void setImageAf(String imageAf) {
+		this.imageAf = imageAf;
 	}
 	public String getQuantity() {
 		return quantity;
@@ -72,17 +91,11 @@ public class ProductDTO {
 	public Long getPricePresent() {
 		return pricePresent;
 	}
-	public Long getAuthorId() {
-		return authorId;
+	public String getAuthorName() {
+		return authorName;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
-	public void setImageDetail(String imageDetail) {
-		this.imageDetail = imageDetail;
 	}
 	public void setQuantity(String quantity) {
 		this.quantity = quantity;
@@ -105,8 +118,8 @@ public class ProductDTO {
 	public void setPricePresent(Long pricePresent) {
 		this.pricePresent = pricePresent;
 	}
-	public void setAuthorId(Long authorId) {
-		this.authorId = authorId;
+	public void setAuthorname(String authorName) {
+		this.authorName = authorName;
 	}
 	
 	

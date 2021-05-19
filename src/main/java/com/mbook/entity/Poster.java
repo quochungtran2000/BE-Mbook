@@ -8,11 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -42,7 +38,6 @@ public class Poster extends BaseEntity {
     )
 	List<Account> listlike = new ArrayList<Account>();
 	
-//	@ManyToMany(mappedBy = "roles")
 	@ManyToMany
     @JoinTable(
             name = "category_enrolled",

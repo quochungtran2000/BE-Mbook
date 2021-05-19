@@ -2,9 +2,7 @@ package com.mbook.convert;
 
 import org.springframework.stereotype.Component;
 
-import com.mbook.dto.PosterDTO;
 import com.mbook.dto.ProductDTO;
-import com.mbook.entity.Poster;
 import com.mbook.entity.Product;
 
 @Component
@@ -17,11 +15,16 @@ public class ProductConvert {
 		productDTO.setSale(productEntity.isSale());
 		productDTO.setRating(productEntity.getRating());
 		productDTO.setQuantity(productEntity.getQuantity());
-		productDTO.setImage(productEntity.getImage());
-		productDTO.setImageDetail(productEntity.getImageDetail());
+		productDTO.setImageBef(productEntity.getImageBef());
+		productDTO.setImageAf(productEntity.getImageAf());
 		productDTO.setPriceOld(productEntity.getPriceOld());
 		productDTO.setPricePresent(productEntity.getPricePresent());
 		productDTO.setDescription(productEntity.getDescription());
+		productDTO.setThumbnails(productEntity.getThumbnails());
+		productDTO.setCreatedby(productEntity.getCreatedby());
+		productDTO.setCreateddate(productEntity.getCreateddate());
+		productDTO.setModifiedby(productEntity.getModifiedby());
+		productDTO.setModifieddate(productEntity.getModifieddate());
 		return productDTO;
 	}
 	public Product toEntity(ProductDTO productDTO) {
@@ -32,11 +35,16 @@ public class ProductConvert {
 		product.setSale(productDTO.isSale());
 		product.setRating(productDTO.getRating());
 		product.setQuantity(productDTO.getQuantity());
-		product.setImage(productDTO.getImage());
-		product.setImageDetail(productDTO.getImageDetail());
+		product.setImageBef(productDTO.getImageBef());
+		product.setImageAf(productDTO.getImageAf());
 		product.setPriceOld(productDTO.getPriceOld());
 		product.setPricePresent(productDTO.getPricePresent());
 		product.setDescription(productDTO.getDescription());
+		product.setThumbnails(productDTO.getThumbnails());
+		product.setCreatedby(productDTO.getCreatedby());
+		product.setCreateddate(productDTO.getCreateddate());
+		product.setModifiedby(productDTO.getModifiedby());
+		product.setModifieddate(productDTO.getModifieddate());
 		return product;
 	}
 }

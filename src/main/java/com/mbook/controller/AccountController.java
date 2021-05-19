@@ -75,19 +75,16 @@ public class AccountController {
 	}
 	// Đăng kí
 	@PostMapping("/signup")
-	public ResponseEntity<?> add(@RequestBody Account acc) {
+	public String add(@RequestBody Account acc) {
 		try {
 			List<Account> list = AccService.ListAll();
 			for (Account account : list) {
 				if (account.getUsername().equals(acc.getUsername())) {
-
-					System.out.println("Be Existed");
-					return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+					return "Tài Khoản Đã Tồn Tại";
 				}
 			}
-			System.out.println("Register Success");
 			AccService.save(acc);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return "Đăng Ký Thành Công";
 		} catch (NoSuchElementException e) {
 			System.out.println(e);
 		}

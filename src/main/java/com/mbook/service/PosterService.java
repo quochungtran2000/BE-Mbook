@@ -43,7 +43,7 @@ public class PosterService implements PosterServiceInterface{
 		Poster postEntity = new Poster();
 		List<CategoryEntity> newList = new ArrayList<CategoryEntity>();
 		for (String item : postDTO.getCategoryCode()) {
-			CategoryEntity categoryEntity = categoryRepository.findOneByCode(item);
+			CategoryEntity categoryEntity = categoryRepository.findOneByName(item);
 			newList.add(categoryEntity);
 		}
 		postEntity = convertPost.toEntity(postDTO);
