@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +26,9 @@ public class Account extends BaseEntity {
 	@ManyToMany(mappedBy = "listlike", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Poster> postlike = new ArrayList<Poster>();
 
-
+	@JsonIgnore
+	@OneToMany(mappedBy = "orders")
+	List<Orders> orderList;
 	public List<Poster> getPostlike() {
 		return postlike;
 	}

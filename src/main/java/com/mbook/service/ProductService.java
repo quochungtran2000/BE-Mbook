@@ -13,6 +13,7 @@ import com.mbook.entity.Product;
 import com.mbook.repository.AuthorRepository;
 import com.mbook.repository.CategoryRepository;
 import com.mbook.repository.ProductRepository;
+import com.mbook.repository.ProductServiceInterface;
 
 @Service
 public class ProductService implements ProductServiceInterface {
@@ -40,17 +41,11 @@ public class ProductService implements ProductServiceInterface {
 		productEntity = convert.toEntity(productdto);
 		productEntity.setAuthor(authorEntity);
 		productEntity.getCategoryId().add(category);
-		System.out.println("product name : " + productEntity.getName());
-		System.out.println("author name : " + productEntity.getAuthor().getName());
-		System.out.println("category name : " + productEntity.getCategoryId());
 		return productRepo.save(productEntity);
-//		return null;
 	} 
-	
 	@Override
 	public Product get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return productRepo.getOne(id);
 	}
 
 	@Override

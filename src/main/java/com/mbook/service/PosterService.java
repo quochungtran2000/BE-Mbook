@@ -14,6 +14,7 @@ import com.mbook.entity.CategoryEntity;
 import com.mbook.entity.Poster;
 import com.mbook.repository.CategoryRepository;
 import com.mbook.repository.PosterRepository;
+import com.mbook.repository.PosterServiceInterface;
 
 @Service
 public class PosterService implements PosterServiceInterface{
