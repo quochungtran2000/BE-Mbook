@@ -49,6 +49,13 @@ public class Product extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id")
     )
 	private List<CategoryEntity> categoryId = new ArrayList<CategoryEntity>();
+	@ManyToMany
+    @JoinTable(
+            name = "DetailsOrders",
+            joinColumns = @JoinColumn(name = "orders_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "products_id",referencedColumnName = "id")
+    )
+	private List<Product> listProduct = new ArrayList<Product>();
 	public Product() {
 		super();
 	}
