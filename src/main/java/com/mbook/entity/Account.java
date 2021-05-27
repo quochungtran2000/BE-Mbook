@@ -29,6 +29,10 @@ public class Account extends BaseEntity {
 	@JsonIgnore
 	@OneToMany(mappedBy = "orders")
 	List<Orders> orderList;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "accountCart")
+	List<Cart> cart;
 	public List<Poster> getPostlike() {
 		return postlike;
 	}
