@@ -3,13 +3,18 @@ package com.mbook.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "product")
@@ -52,32 +57,22 @@ public class Product extends BaseEntity{
 	@ManyToMany
     @JoinTable(
             name = "DetailsOrders",
-            joinColumns = @JoinColumn(name = "orders_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "products_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "products_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "orders_id",referencedColumnName = "id")
     )
 	private List<Product> listProduct = new ArrayList<Product>();
+	
+	 @JsonIgnore
+	 @ManyToMany(mappedBy = "listProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	 private List<Cart> listCart = new ArrayList<Cart>();
+
 	public Product() {
 		super();
 	}
 
-
-	public List<CategoryEntity> getCategoryId() {
-		return categoryId;
-	}
-	public void setCategoryId(List<CategoryEntity> categoryId) {
-		this.categoryId = categoryId;
-	}
-	public String getName() {
-		return name;
-	}
-	public Author getAuthor() {
-		return author;
-	}
-
-
 	public Product(String name, String imageBef, String imageAf, String quantity, String thumbnails, String description,
 			int rating, boolean hot, boolean sale, Long priceOld, Long pricePresent, Author author,
-			List<CategoryEntity> categoryId) {
+			List<CategoryEntity> categoryId, List<Product> listProduct, List<Cart> listCart) {
 		super();
 		this.name = name;
 		this.imageBef = imageBef;
@@ -92,86 +87,130 @@ public class Product extends BaseEntity{
 		this.pricePresent = pricePresent;
 		this.author = author;
 		this.categoryId = categoryId;
+		this.listProduct = listProduct;
+		this.listCart = listCart;
 	}
 
+	public String getName() {
+		return name;
+	}
 
 	public String getImageBef() {
 		return imageBef;
 	}
 
-
 	public String getImageAf() {
 		return imageAf;
 	}
 
+	public String getQuantity() {
+		return quantity;
+	}
 
 	public String getThumbnails() {
 		return thumbnails;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public boolean isHot() {
+		return hot;
+	}
+
+	public boolean isSale() {
+		return sale;
+	}
+
+	public Long getPriceOld() {
+		return priceOld;
+	}
+
+	public Long getPricePresent() {
+		return pricePresent;
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public List<CategoryEntity> getCategoryId() {
+		return categoryId;
+	}
+
+	public List<Product> getListProduct() {
+		return listProduct;
+	}
+
+	public List<Cart> getListCart() {
+		return listCart;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public void setImageBef(String imageBef) {
 		this.imageBef = imageBef;
 	}
 
-
 	public void setImageAf(String imageAf) {
 		this.imageAf = imageAf;
 	}
 
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 
 	public void setThumbnails(String thumbnails) {
 		this.thumbnails = thumbnails;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public void setHot(boolean hot) {
+		this.hot = hot;
+	}
+
+	public void setSale(boolean sale) {
+		this.sale = sale;
+	}
+
+	public void setPriceOld(Long priceOld) {
+		this.priceOld = priceOld;
+	}
+
+	public void setPricePresent(Long pricePresent) {
+		this.pricePresent = pricePresent;
+	}
 
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
-	public String getQuantity() {
-		return quantity;
+
+	public void setCategoryId(List<CategoryEntity> categoryId) {
+		this.categoryId = categoryId;
 	}
-	public String getDescription() {
-		return description;
+
+	public void setListProduct(List<Product> listProduct) {
+		this.listProduct = listProduct;
 	}
-	public int getRating() {
-		return rating;
+
+	public void setListCart(List<Cart> listCart) {
+		this.listCart = listCart;
 	}
-	
-	public boolean isHot() {
-		return hot;
-	}
-	public boolean isSale() {
-		return sale;
-	}
-	public Long getPriceOld() {
-		return priceOld;
-	}
-	public Long getPricePresent() {
-		return pricePresent;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
-	public void setHot(boolean hot) {
-		this.hot = hot;
-	}
-	public void setSale(boolean sale) {
-		this.sale = sale;
-	}
-	public void setPriceOld(Long priceOld) {
-		this.priceOld = priceOld;
-	}
-	public void setPricePresent(Long pricePresent) {
-		this.pricePresent = pricePresent;
-	}
+
+
+
 }

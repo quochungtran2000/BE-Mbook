@@ -3,8 +3,6 @@ package com.mbook.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +31,6 @@ public class PosterService implements PosterServiceInterface{
 		return PosterRepo.findAll();
 	}
 
-//	@Override
-//	public void delete(long[] ids) {
-//		for(long item: ids) {
-//			newRepository.delete(item);
-//		}
-//	}
 	@Override
 	public Poster save(PosterDTO postDTO) {
 		Poster postEntity = new Poster();
@@ -49,7 +41,6 @@ public class PosterService implements PosterServiceInterface{
 		}
 		postEntity = convertPost.toEntity(postDTO);
 		postEntity.setCategoryId(newList);
-		
 		return PosterRepo.save(postEntity);
 	}
 
