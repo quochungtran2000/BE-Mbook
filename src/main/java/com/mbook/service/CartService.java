@@ -32,30 +32,47 @@ public class CartService implements CartServiceInterface {
 	public void save(CartDTO cartDTO) {
 		Cart cartEntity = new Cart();
 		List<Cart> listCart = repo.findAll();
-		boolean check = false;
+		boolean checkCart = false;
+		int checkProduct = -1;
 		for (Cart cart : listCart) {
-			System.out.println("index" + cart.getListProduct().indexOf(cartDTO.getIdProduct()));
-			if(cart.getAccountCart().getUsername().equalsIgnoreCase(cartDTO.getCreatedby())
-			&& cart.getListProduct().indexOf(cartDTO.getIdProduct()) != -1){
-				//Tìm id product chưa đúng 
-				check = true;
+			//Kiểm tra sản phẩm có nằm trong giỏ hàng của account
+			if(cart.getAccountCart().getUsername().equalsIgnoreCase(cartDTO.getCreatedby())){
+				checkCart = true;
 				cartEntity = cart;
-			}else {
+				//Product isExist
+				checkProduct = cart.getListProduct().indexOf(productRepo.findById(cartDTO.getIdProduct()).get());
 				
 			}
 		}
-		if(check == true) {
+		//Handle Cart with status
+		if(checkCart == true) {
+			Product productEntity = productRepo.findById(cartDTO.getIdProduct()).get();
+			if(checkProduct != -1) {
+				cartEntity.getListProduct().get(checkProduct).setQuantity(
+						cartEntity.getListProduct().get(checkProduct).getQuantity()+ 1);
+			}else {
+				productEntity.setQuantity(1);
+				cartEntity.getListProduct().add(productEntity);
+			}
+			long total= 0;
+			for (Product product : cartEntity.getListProduct()) {
+				if(product.getPricePresent() != null) {
+					total += product.getPricePresent() *  product.getQuantity();
+				}else {
+					total += product.getPriceOld() *  product.getQuantity();
+				}
+			}
+			cartEntity.setTotalPrice(total);
 			cartEntity.setQuantity(cartEntity.getQuantity() + 1);
-			cartEntity.setTotalPrice(cartEntity.getPrice() * cartEntity.getQuantity());
-			
 		}else {
 			Product productEntity = productRepo.findById(cartDTO.getIdProduct()).get();
+			productEntity.setQuantity(1);
 			Account accountEntity = accountRepo.findOneByUsername(cartDTO.getCreatedby());
 			cartEntity.setCreatedby(cartDTO.getCreatedby());
 			cartEntity.setAccountCart(accountEntity);
 			cartEntity.getListProduct().add(productEntity);
 			cartEntity.setPrice(cartDTO.getPrice());
-			cartEntity.setQuantity(cartDTO.getQuantity());
+			cartEntity.setQuantity(1);
 			cartEntity.setTotalPrice(cartDTO.getPrice() * cartDTO.getQuantity());
 		}
 		repo.save(cartEntity);	

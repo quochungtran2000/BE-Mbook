@@ -49,7 +49,7 @@ public class CartController {
 			if(item.getAccountCart().getId() == acc.getId()) {
 				cart.add(item);
 			}
-		}
+		}		
 		return cart;
 	}
 	@PostMapping("/upload")

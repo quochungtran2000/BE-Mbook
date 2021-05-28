@@ -27,7 +27,7 @@ public class Product extends BaseEntity{
 	@Column
 	private String imageAf;
 	@Column
-	private String quantity;
+	private int quantity;
 	@Column
 	private String thumbnails;
 	@Column
@@ -70,7 +70,7 @@ public class Product extends BaseEntity{
 		super();
 	}
 
-	public Product(String name, String imageBef, String imageAf, String quantity, String thumbnails, String description,
+	public Product(String name, String imageBef, String imageAf, int quantity, String thumbnails, String description,
 			int rating, boolean hot, boolean sale, Long priceOld, Long pricePresent, Author author,
 			List<CategoryEntity> categoryId, List<Product> listProduct, List<Cart> listCart) {
 		super();
@@ -103,7 +103,7 @@ public class Product extends BaseEntity{
 		return imageAf;
 	}
 
-	public String getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
@@ -163,7 +163,7 @@ public class Product extends BaseEntity{
 		this.imageAf = imageAf;
 	}
 
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
