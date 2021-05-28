@@ -7,7 +7,7 @@ public class ProductDTO extends BaseDTO{
 	private String name;
 	private String imageBef;
 	private String imageAf;
-	private String quantity;
+	private int quantity;
 	private String description;
 	private String thumbnails;
 	private int rating;
@@ -20,10 +20,9 @@ public class ProductDTO extends BaseDTO{
 	public ProductDTO() {
 		super();
 	}
-	
-	public ProductDTO(String name, String imageBef, String imageAf, String quantity, String description,
-			String thumbnails, int rating, boolean hot, boolean sale, Long priceOld, Long pricePresent,
-			String authorName, String category) {
+	public ProductDTO(String name, String imageBef, String imageAf, int quantity, String description, String thumbnails,
+			int rating, boolean hot, boolean sale, Long priceOld, Long pricePresent, String authorName,
+			String category) {
 		super();
 		this.name = name;
 		this.imageBef = imageBef;
@@ -39,42 +38,23 @@ public class ProductDTO extends BaseDTO{
 		this.authorName = authorName;
 		this.category = category;
 	}
-
-	public String getThumbnails() {
-		return thumbnails;
-	}
-	public void setThumbnails(String thumbnails) {
-		this.thumbnails = thumbnails;
-	}
 	public String getName() {
 		return name;
 	}
 	public String getImageBef() {
 		return imageBef;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
 	public String getImageAf() {
 		return imageAf;
 	}
-	public void setImageBef(String imageBef) {
-		this.imageBef = imageBef;
-	}
-	public void setImageAf(String imageAf) {
-		this.imageAf = imageAf;
-	}
-	public String getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 	public String getDescription() {
 		return description;
+	}
+	public String getThumbnails() {
+		return thumbnails;
 	}
 	public int getRating() {
 		return rating;
@@ -94,14 +74,26 @@ public class ProductDTO extends BaseDTO{
 	public String getAuthorName() {
 		return authorName;
 	}
+	public String getCategory() {
+		return category;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setQuantity(String quantity) {
+	public void setImageBef(String imageBef) {
+		this.imageBef = imageBef;
+	}
+	public void setImageAf(String imageAf) {
+		this.imageAf = imageAf;
+	}
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public void setThumbnails(String thumbnails) {
+		this.thumbnails = thumbnails;
 	}
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -118,8 +110,11 @@ public class ProductDTO extends BaseDTO{
 	public void setPricePresent(Long pricePresent) {
 		this.pricePresent = pricePresent;
 	}
-	public void setAuthorname(String authorName) {
+	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 	
