@@ -71,9 +71,14 @@ public class CartService implements CartServiceInterface {
 			cartEntity.setCreatedby(cartDTO.getCreatedby());
 			cartEntity.setAccountCart(accountEntity);
 			cartEntity.getListProduct().add(productEntity);
-			cartEntity.setPrice(cartDTO.getPrice());
 			cartEntity.setQuantity(1);
-			cartEntity.setTotalPrice(cartDTO.getPrice() * cartDTO.getQuantity());
+			long total= 0;
+			if(productEntity.getPricePresent() != null) {
+				total += productEntity.getPricePresent() ;
+			}else {
+				total += productEntity.getPriceOld();
+			}
+			cartEntity.setTotalPrice(total);
 		}
 		repo.save(cartEntity);	
 	}
@@ -85,8 +90,42 @@ public class CartService implements CartServiceInterface {
 
 	@Override
 	public void delete(Long id) {
+		
 		repo.deleteById(id);	
 	}
-	
+	public void deleteItem(Long id, String username) {
+		Cart cartEntity = new Cart();
+		List<Cart> listCart = repo.findAll();
+		boolean checkCart = false;
+		int checkProduct = -1;
+		for (Cart cart : listCart) {	
+			//Kiểm tra sản phẩm có nằm trong giỏ hàng của account
+			if(cart.getAccountCart().getUsername().equalsIgnoreCase(username)){
+				checkCart = true;
+				cartEntity = cart;
+				//Product isExist
+				
+				checkProduct = cart.getListProduct().indexOf(productRepo.findById(id).get());
+				
+			}
+		}
+		if(checkCart == true) {
+			Product productEntity = productRepo.findById(id).get();
+			if(checkProduct != -1) {
+				cartEntity.setQuantity(cartEntity.getQuantity() - productEntity.getQuantity());
+				cartEntity.getListProduct().remove(checkProduct);
+			}
+			long total= 0;
+			for (Product product : cartEntity.getListProduct()) {
+				if(product.getPricePresent() != null) {
+					total += product.getPricePresent() *  product.getQuantity();
+				}else {
+					total += product.getPriceOld() *  product.getQuantity();
+				}
+			}
+			cartEntity.setTotalPrice(total);
+		}
+		repo.save(cartEntity);
+	}
 	
 }

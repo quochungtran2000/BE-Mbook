@@ -3,17 +3,25 @@ package com.mbook.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mbook.entity.OrderDTO;
 import com.mbook.entity.Orders;
+import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.OrderRepository;
+import com.mbook.service.OrderService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
@@ -22,17 +30,28 @@ public class OrderController {
 
 	@Autowired
 	private OrderRepository repo;
-//	@Autowired
-//	private JwtUtil jwtUtil;
+	@Autowired
+	private OrderService service;
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	@GetMapping("/get")
 	public ResponseEntity<List<Orders>> list() {
-		return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
+		return new ResponseEntity<>(service.ListAll(), HttpStatus.OK);
 	}
 
-	@GetMapping("/details/{posterId}")
-	public ResponseEntity<Orders> get(@PathVariable Long id) {
-		return ResponseEntity.status(HttpStatus.OK).body(repo.getOne(id));
-	}
+	@PostMapping("/upload")
+	public String Create(@Validated @RequestBody OrderDTO order, HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("Authorization");
+		String jwt = authorizationHeader.substring(7);
+		String username = jwtUtil.extractUsername(jwt);
+		if (order != null) {
+			order.setCreatedby(username);
+			service.save(order);
+			return "Check Out Thành Công";
+		} else {
+			return "Check Out Thất Bại, Vui Lòng Kiểm Tra Lại";
+		}
 
+	}
 }

@@ -7,5 +7,4 @@ import com.mbook.entity.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long>{
 
 	
-	
 }

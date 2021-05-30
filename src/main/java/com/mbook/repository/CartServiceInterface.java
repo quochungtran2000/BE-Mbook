@@ -11,4 +11,5 @@ public interface CartServiceInterface {
 	public void delete(Long id) ;
 	void save(CartDTO acc);
 //	List<Cart> getListByUser(Long id);
+	void deleteItem(Long id,String username);
 }
