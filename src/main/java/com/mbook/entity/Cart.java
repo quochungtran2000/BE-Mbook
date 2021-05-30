@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 	
 @Entity
 public class Cart extends BaseEntity {
@@ -17,12 +20,15 @@ public class Cart extends BaseEntity {
 	int quantity; 
 	@Column 
 	Long totalPrice;
-	@Column 
-	Long price;
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id",referencedColumnName = "id")	
 	Account accountCart;
+	
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "bill")
+	Orders orders;
 	
 	@ManyToMany
     @JoinTable(
@@ -36,11 +42,10 @@ public class Cart extends BaseEntity {
 		super();
 	}
 
-	public Cart(int quantity, Long totalPrice, Long price, Account accountCart, List<Product> listProduct) {
+	public Cart(int quantity, Long totalPrice, Account accountCart, List<Product> listProduct) {
 		super();
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
-		this.price = price;
 		this.accountCart = accountCart;
 		this.listProduct = listProduct;
 	}
@@ -51,10 +56,6 @@ public class Cart extends BaseEntity {
 
 	public Long getTotalPrice() {
 		return totalPrice;
-	}
-
-	public Long getPrice() {
-		return price;
 	}
 
 	public Account getAccountCart() {
@@ -71,10 +72,6 @@ public class Cart extends BaseEntity {
 
 	public void setTotalPrice(Long totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	public void setPrice(Long price) {
-		this.price = price;
 	}
 
 	public void setAccountCart(Account accountCart) {
