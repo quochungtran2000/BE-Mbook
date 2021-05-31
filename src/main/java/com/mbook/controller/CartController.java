@@ -3,6 +3,7 @@ package com.mbook.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,12 +22,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbook.entity.Account;
+import com.mbook.entity.Author;
 import com.mbook.entity.Cart;
 import com.mbook.entity.CartDTO;
+import com.mbook.entity.Orders;
+import com.mbook.entity.Product;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.AccountRepository;
+import com.mbook.repository.AuthorRepository;
 import com.mbook.repository.CartRepository;
+import com.mbook.repository.OrderRepository;
+import com.mbook.repository.ProductRepository;
 import com.mbook.service.CartService;
+import com.mbook.service.ProductService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RequestMapping("/cart")
@@ -35,10 +43,15 @@ public class CartController {
 
 	@Autowired
 	AccountRepository accountRepo;
+
+	@Autowired
+	OrderRepository orderRepo;
 	@Autowired
 	CartRepository repo;
 	@Autowired
 	CartService service;
+	@Autowired
+	AuthorRepository AuthorRepo;
 	@Autowired
 	private JwtUtil jwtUtil;
 	@GetMapping("/get")
@@ -58,11 +71,13 @@ public class CartController {
 	}
 	@PostMapping("/upload")
 	public String CreateProduct(@Validated @RequestBody CartDTO cart, HttpServletRequest request) {
+		
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		if (cart != null) {
 			cart.setCreatedby(username);
+			System.out.println("username : " + username	);
 			service.save(cart);
 			return "Thêm Sản Phẩm Mới Thành Công";
 		} else {
@@ -95,8 +110,22 @@ public class CartController {
 			return "Thêm Sản Phẩm Thất Bại";
 		}
 	}
+	@PutMapping("/checkout/{idCart}/{idOrder}")
+	public String checkout(@PathVariable Long idCart,@PathVariable Long idOrder) {
+		if (idOrder != null) {
+			System.out.println("id orders : " + idOrder);
+			Cart cart = repo.findById(idCart).get();
+			Orders order = orderRepo.findById(idOrder).get();
+			cart.setOrders(order);
+			cart.setCheckout(true);
+			repo.save(cart);
+			return "Checkout Thành Công";
+		} else {
+			return "Checkout Thất Bại";
+		}
+	}
 	@PostMapping("/delete/products/{id}")
-	public String delete(@PathVariable Long id,HttpServletRequest request) {
+	public String delete(@PathVariable UUID id,HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);

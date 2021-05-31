@@ -41,16 +41,15 @@ public class OrderController {
 	}
 
 	@PostMapping("/upload")
-	public String Create(@Validated @RequestBody OrderDTO order, HttpServletRequest request) {
+	public Orders Create(@Validated @RequestBody OrderDTO order, HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		if (order != null) {
 			order.setCreatedby(username);
-			service.save(order);
-			return "Check Out Thành Công";
+			return service.save(order);
 		} else {
-			return "Check Out Thất Bại, Vui Lòng Kiểm Tra Lại";
+			return null;
 		}
 
 	}

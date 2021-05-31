@@ -20,7 +20,8 @@ public class Cart extends BaseEntity {
 	int quantity; 
 	@Column 
 	Long totalPrice;
-	
+	@Column
+	boolean checkout;
 	@ManyToOne
 	@JoinColumn(name = "account_id",referencedColumnName = "id")	
 	Account accountCart;
@@ -38,16 +39,29 @@ public class Cart extends BaseEntity {
     )
 	private List<Product> listProduct = new ArrayList<Product>();
 	
+	
 	public Cart() {
 		super();
 	}
-
-	public Cart(int quantity, Long totalPrice, Account accountCart, List<Product> listProduct) {
+	
+	
+	public Cart(int quantity, Long totalPrice, boolean checkout, Account accountCart, Orders orders,
+			List<Product> listProduct) {
 		super();
 		this.quantity = quantity;
 		this.totalPrice = totalPrice;
+		this.checkout = checkout;
 		this.accountCart = accountCart;
+		this.orders = orders;
 		this.listProduct = listProduct;
+	}
+
+
+	public Orders getOrders() {
+		return orders;
+	}
+	public void setOrders(Orders orders) {
+		this.orders = orders;
 	}
 
 	public int getQuantity() {
@@ -80,6 +94,15 @@ public class Cart extends BaseEntity {
 
 	public void setListProduct(List<Product> listProduct) {
 		this.listProduct = listProduct;
+	}
+
+
+
+	public boolean isCheckout() {
+		return checkout;
+	}
+	public void setCheckout(boolean checkout) {
+		this.checkout = checkout;
 	}
 
 

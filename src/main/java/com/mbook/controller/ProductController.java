@@ -3,6 +3,7 @@ package com.mbook.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,17 +50,16 @@ public class ProductController {
 	private JwtUtil jwtUtil;
 
 	@GetMapping("/get")
-	public ResponseEntity<List<Product>> all() {
-		return new ResponseEntity<>(productRepo.findAll(), HttpStatus.OK);
-	}
-
-	@GetMapping("/")
-	public ResponseEntity<List<Product>> getAll() {
-		return new ResponseEntity<>(productRepo.findAll(), HttpStatus.OK);
+	public List<Product> all() {
+		List<Author> list = AuthorRepo.findAll();
+//		for (Author author : list) {
+//			System.out.println("author id : " + author.getId());
+//		}
+		return productRepo.findAll();
 	}
 
 	@GetMapping("/details/{productID}")
-	public ResponseEntity<Product> get(@PathVariable Long productID) {
+	public ResponseEntity<Product> get(@PathVariable UUID productID) {
 		return ResponseEntity.status(HttpStatus.OK).body(productRepo.getOne(productID));
 	}
 
@@ -79,17 +79,17 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable UUID id) {
 		try {
 			productService.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);	
 		} catch (NoSuchElementException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PutMapping("/update/{id}")
-	public String update(@RequestBody ProductDTO dataUpdate, @PathVariable Long id, HttpServletRequest request) {
+	public String update(@RequestBody ProductDTO dataUpdate, @PathVariable UUID id, HttpServletRequest request) {
 		try {
 			Product productEntity = new Product();
 			String authorizationHeader = request.getHeader("Authorization");

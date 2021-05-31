@@ -1,6 +1,7 @@
 package com.mbook.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,10 @@ public class AccountService implements AccountServiceInterface {
 	public void save(Account acc) {
 		AccRepo.save(acc);
 	}
-	public Account get(Long id) {
+	public Account get(UUID id) {
 		return AccRepo.findById(id).get();
 	}
-	public void delete(Long id) {
+	public void delete(UUID id) {
 		AccRepo.deleteById(id);
 	}
 	
