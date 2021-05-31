@@ -3,7 +3,7 @@ package com.mbook.entity;
 import java.util.Date;
 
 public class CartDTO extends BaseDTO{
-	Long idProduct;
+	String idProduct;
 	int quantity; 
 	public CartDTO() {
 		super();
@@ -13,24 +13,24 @@ public class CartDTO extends BaseDTO{
 		super(createdby, createddate, modifiedby, modifieddate);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public CartDTO(Long idProduct, int quantity) {
-		super();
-		this.idProduct = idProduct;
-		this.quantity = quantity;
-	}
-	public Long getIdProduct() {
+	public String getIdProduct() {
 		return idProduct;
 	}
 	public int getQuantity() {
 		return quantity;
 	}
-	public void setIdProduct(Long idProduct) {
+	public void setIdProduct(String idProduct) {
 		this.idProduct = idProduct;
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	public CartDTO(String idProduct, int quantity) {
+		super();
+		this.idProduct = idProduct;
+		this.quantity = quantity;
+	}
+	
 	
 	
 }

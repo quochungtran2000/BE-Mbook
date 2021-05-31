@@ -2,6 +2,7 @@ package com.mbook.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,7 +48,7 @@ public class AccountController {
 	}
 
 	@GetMapping("/{id}")
-	public Account get(@PathVariable Long id) {
+	public Account get(@PathVariable UUID id) {
 		return AccService.get(id);
 	}
 
@@ -55,7 +56,7 @@ public class AccountController {
 	@PostMapping("/signin")
 	public Account login(@RequestBody User data) {
 		List<Account> list = AccService.ListAll();
-		Long accID = null;
+		UUID accID = null;
 		for (Account account : list) {
 			if(account.getUsername().equals(data.getUsername())&& account.getPassword().equals(data.getPassword())) {
 //				System.out.println("Login Success");
@@ -106,7 +107,7 @@ public class AccountController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody Account accNew, @PathVariable Long id) {
+	public ResponseEntity<?> update(@RequestBody Account accNew, @PathVariable UUID id) {
 		try {
 			Account accOld = AccService.get(id);
 			accOld.setUsername(accNew.getUsername());
@@ -125,7 +126,7 @@ public class AccountController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable UUID id) {
 		try {
 			AccService.delete(id);
 			return new ResponseEntity<>(HttpStatus.OK);

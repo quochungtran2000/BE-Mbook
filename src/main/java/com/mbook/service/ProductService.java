@@ -1,6 +1,7 @@
 package com.mbook.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,12 +45,12 @@ public class ProductService implements ProductServiceInterface {
 		return productRepo.save(productEntity);
 	} 
 	@Override
-	public Product get(Long id) {
+	public Product get(UUID id) {
 		return productRepo.getOne(id);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(UUID id) {
 		productRepo.deleteById(id);
 	}
 
