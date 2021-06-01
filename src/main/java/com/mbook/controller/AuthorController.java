@@ -1,6 +1,7 @@
 package com.mbook.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,8 +36,8 @@ public class AuthorController {
 	}
 
 	@GetMapping("/details/{AuthorId}")
-	public ResponseEntity<Author> get(@PathVariable Long AuthorId) {
-		return ResponseEntity.status(HttpStatus.OK).body(repo.getOne(AuthorId));
+	public ResponseEntity<Author> get(@PathVariable UUID AuthorId) {
+		return ResponseEntity.status(HttpStatus.OK).body(repo.findById(AuthorId).get());
 	}
 
 	@PostMapping("/upload")
