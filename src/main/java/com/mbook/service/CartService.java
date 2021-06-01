@@ -1,15 +1,18 @@
 package com.mbook.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mbook.dto.CartDTO;
 import com.mbook.entity.Account;
 import com.mbook.entity.Author;
 import com.mbook.entity.Cart;
-import com.mbook.entity.CartDTO;
 import com.mbook.entity.Product;
 import com.mbook.repository.AccountRepository;
 import com.mbook.repository.AuthorRepository;
@@ -33,7 +36,8 @@ public class CartService implements CartServiceInterface {
 		return repo.findAll();
 	}
 	@Override
-	public void save(CartDTO cartDTO) {
+	@Transactional
+	public Cart save(CartDTO cartDTO) {
 		List<Author> listAu = AuthorRepo.findAll();
 		List<Product> listPro = productRepo.findAll();
 		List<Account> listAcc = accountRepo.findAll();
@@ -44,20 +48,23 @@ public class CartService implements CartServiceInterface {
 		boolean checkCart = false;
 		boolean checkOut = false;
 		int checkProduct = -1; 
-		for (Cart cart : listCart) {
-			//Kiểm tra sản phẩm có nằm trong giỏ hàng của account
-			if(cart.getAccountCart().getUsername().equalsIgnoreCase(cartDTO.getCreatedby())){
-				checkCart = true;
-				cartEntity = cart;
-				//Product isExist
-				checkProduct = cart.getListProduct().indexOf(p);
-				if(cart.isCheckout() == true) {
-					checkOut = true;
-				}else {
-					checkOut = false;
+		if(listCart != null) {
+			for (Cart cart : listCart) {
+				//Kiểm tra sản phẩm có nằm trong giỏ hàng của account
+				if(cart.getAccountCart().getUsername().equalsIgnoreCase(cartDTO.getCreatedby())){
+					checkCart = true;
+					cartEntity = cart;
+					//Product isExist
+					checkProduct = cart.getListProduct().indexOf(p);
+					if(cart.isCheckout() == true) {
+						checkOut = true;
+					}else {
+						checkOut = false;
+					}
 				}
-			}
+			}	
 		}
+		
 		System.out.println("" );
 		System.out.println("index Product: " + checkProduct);
 		System.out.println("status cart: " + checkCart);
@@ -101,12 +108,17 @@ public class CartService implements CartServiceInterface {
 			}
 			
 		}else {
-			Product productEntity =productRepo.findById(idtemp).get();
+			Product productEntity = productRepo.findById(idtemp).get();
 			productEntity.setQuantity(1);
+			List<Product> newList = new ArrayList<Product>();
+			newList.add(productEntity);
+			System.out.println("" );
+			System.out.println("name Product: " + productEntity.getName());
+			System.out.println("id : " + productEntity.getId());
 			Account accountEntity = accountRepo.findOneByUsername(cartDTO.getCreatedby());
 			cartEntity.setCreatedby(cartDTO.getCreatedby());
 			cartEntity.setAccountCart(accountEntity);
-			cartEntity.getListProduct().add(productEntity);
+			cartEntity.setListProduct(newList);;
 			cartEntity.setQuantity(1);
 			cartEntity.setCheckout(false);
 			long total= 0;
@@ -117,17 +129,19 @@ public class CartService implements CartServiceInterface {
 			}
 			cartEntity.setTotalPrice(total);
 		}
-		
-		repo.save(cartEntity);	
+		System.out.println("" );
+		System.out.println("id cart: " + cartEntity.getId());
+		System.out.println("length cart: " + cartEntity.getListProduct().size());
+		return repo.save(cartEntity);	
 	}
 
 	@Override
-	public Cart get(Long id) {
+	public Cart get(UUID id) {
 		return repo.findById(id).get();
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(UUID id) {
 		
 		repo.deleteById(id);	
 	}

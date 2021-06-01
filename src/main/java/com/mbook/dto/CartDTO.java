@@ -1,4 +1,4 @@
-package com.mbook.entity;
+package com.mbook.dto;
 
 import java.util.Date;
 

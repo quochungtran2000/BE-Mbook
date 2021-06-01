@@ -1,7 +1,5 @@
 package com.mbook.dto;
 
-import com.mbook.entity.BaseDTO;
-
 public class ProductDTO extends BaseDTO{
 	
 	private String name;
