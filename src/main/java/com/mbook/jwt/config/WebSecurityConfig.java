@@ -46,10 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.authorizeRequests()
 				.antMatchers("/account/signin","/account/signup"
 						,"/poster/get","/poster/details/**"
-						,"/product/get/**"
+						,"/product/get/**","/product/details/**"
 						,"/order/get/**"
 						,"/category/get/**"
-						,"/author/get/**")
+						,"/author/get/**","/author/details/**")
 				.permitAll().
 				anyRequest().authenticated().and().
 				exceptionHandling().and().sessionManagement()

@@ -57,9 +57,8 @@ public class ProductController {
 
 	@GetMapping("/details/{productID}")
 	public ResponseEntity<Product> get(@PathVariable UUID productID) {
-		return ResponseEntity.status(HttpStatus.OK).body(productRepo.getOne(productID));
+		return ResponseEntity.status(HttpStatus.OK).body(productRepo.findById(productID).get());
 	}
-
 	@PostMapping("/upload")
 	public String CreateProduct(@Validated @RequestBody ProductDTO pro, HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
