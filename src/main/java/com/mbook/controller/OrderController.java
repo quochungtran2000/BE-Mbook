@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mbook.entity.OrderDTO;
+import com.mbook.dto.OrderDTO;
 import com.mbook.entity.Orders;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.OrderRepository;

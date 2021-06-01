@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mbook.dto.CartDTO;
 import com.mbook.entity.Account;
 import com.mbook.entity.Author;
 import com.mbook.entity.Cart;
-import com.mbook.entity.CartDTO;
 import com.mbook.entity.Orders;
 import com.mbook.entity.Product;
 import com.mbook.jwt.util.JwtUtil;
@@ -43,7 +43,8 @@ public class CartController {
 
 	@Autowired
 	AccountRepository accountRepo;
-
+	@Autowired
+	ProductRepository proRepo;
 	@Autowired
 	OrderRepository orderRepo;
 	@Autowired
@@ -86,17 +87,23 @@ public class CartController {
 
 	}
 	@PutMapping("/update/{id}")
-	public String updateQuantity(@PathVariable Long id,
-			@Validated	@RequestBody int quantity, HttpServletRequest request) {
+	public String updateQuantity(@PathVariable UUID id,
+			@Validated	@RequestBody String quantity, HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		boolean status = false;
+		System.out.println("");
+		System.out.println("quantity :" +  quantity);
+		System.out.println("id :" +  id);
 		List<Cart> listCart = service.ListAll();
+		Product pro = proRepo.findById(id).get();
 		for (Cart cart : listCart) {
-			if(cart.getAccountCart().getUsername().equalsIgnoreCase(username)
-			&& cart.getListProduct().indexOf(id) != -1){
-				cart.setQuantity(cart.getQuantity() + quantity);
+			int index =  cart.getListProduct().indexOf(pro);
+			if(cart.getAccountCart().getUsername().equalsIgnoreCase(username) && cart.isCheckout() == false
+			&& cart.getListProduct().indexOf(pro) != -1){
+				cart.setQuantity(cart.getQuantity() + Integer.parseInt(quantity));
+				cart.getListProduct().get(index).setQuantity(cart.getListProduct().get(index).getQuantity() + Integer.parseInt(quantity));
 				cart.setModifiedby(username);
 				repo.save(cart);
 				status = true;
@@ -111,7 +118,7 @@ public class CartController {
 		}
 	}
 	@PutMapping("/checkout/{idCart}/{idOrder}")
-	public String checkout(@PathVariable Long idCart,@PathVariable Long idOrder) {
+	public String checkout(@PathVariable UUID idCart,@PathVariable UUID idOrder) {
 		if (idOrder != null) {
 			System.out.println("id orders : " + idOrder);
 			Cart cart = repo.findById(idCart).get();

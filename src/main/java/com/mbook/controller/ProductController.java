@@ -52,9 +52,6 @@ public class ProductController {
 	@GetMapping("/get")
 	public List<Product> all() {
 		List<Author> list = AuthorRepo.findAll();
-//		for (Author author : list) {
-//			System.out.println("author id : " + author.getId());
-//		}
 		return productRepo.findAll();
 	}
 

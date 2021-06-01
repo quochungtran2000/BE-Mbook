@@ -1,4 +1,4 @@
-package com.mbook.entity;
+package com.mbook.dto;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ public class OrderDTO extends BaseDTO{
 	String fullname;
 	String methodPay;
 	String numberPhone;
-	Long idCart;
+	String idCart;
 	Long total;
 	Long totalMoneyProduct;
 	int quantity;
@@ -21,9 +21,8 @@ public class OrderDTO extends BaseDTO{
 		super(createdby, createddate, modifiedby, modifieddate);
 		// TODO Auto-generated constructor stub
 	}
-
-	public OrderDTO(String address, String discount, String fullname, String methodPay, String numberPhone, Long idCart,
-			Long total, Long totalMoneyProduct, int quantity, int ship) {
+	public OrderDTO(String address, String discount, String fullname, String methodPay, String numberPhone,
+			String idCart, Long total, Long totalMoneyProduct, int quantity, int ship) {
 		super();
 		this.address = address;
 		this.discount = discount;
@@ -34,18 +33,6 @@ public class OrderDTO extends BaseDTO{
 		this.total = total;
 		this.totalMoneyProduct = totalMoneyProduct;
 		this.quantity = quantity;
-		this.ship = ship;
-	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public int getShip() {
-		return ship;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	public void setShip(int ship) {
 		this.ship = ship;
 	}
 	public String getAddress() {
@@ -63,7 +50,7 @@ public class OrderDTO extends BaseDTO{
 	public String getNumberPhone() {
 		return numberPhone;
 	}
-	public Long getIdCart() {
+	public String getIdCart() {
 		return idCart;
 	}
 	public Long getTotal() {
@@ -71,6 +58,12 @@ public class OrderDTO extends BaseDTO{
 	}
 	public Long getTotalMoneyProduct() {
 		return totalMoneyProduct;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public int getShip() {
+		return ship;
 	}
 	public void setAddress(String address) {
 		this.address = address;
@@ -87,7 +80,7 @@ public class OrderDTO extends BaseDTO{
 	public void setNumberPhone(String numberPhone) {
 		this.numberPhone = numberPhone;
 	}
-	public void setIdCart(Long idCart) {
+	public void setIdCart(String idCart) {
 		this.idCart = idCart;
 	}
 	public void setTotal(Long total) {
@@ -96,6 +89,14 @@ public class OrderDTO extends BaseDTO{
 	public void setTotalMoneyProduct(Long totalMoneyProduct) {
 		this.totalMoneyProduct = totalMoneyProduct;
 	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public void setShip(int ship) {
+		this.ship = ship;
+	}
+
+	
 	
 	
 }
