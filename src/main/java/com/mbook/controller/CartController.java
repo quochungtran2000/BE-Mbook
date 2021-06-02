@@ -104,7 +104,7 @@ public class CartController {
 			&& cart.getListProduct().indexOf(pro) != -1){
 				cart.setQuantity(cart.getQuantity() + Integer.parseInt(quantity));
 				cart.getListProduct().get(index).setQuantity(cart.getListProduct().get(index).getQuantity() + Integer.parseInt(quantity));
-				cart.setModifiedby(username);
+				cart.setModifiedby(username);	
 				repo.save(cart);
 				status = true;
 			}else {

@@ -51,7 +51,6 @@ public class ProductController {
 
 	@GetMapping("/get")
 	public List<Product> all() {
-		List<Author> list = AuthorRepo.findAll();
 		return productRepo.findAll();
 	}
 
