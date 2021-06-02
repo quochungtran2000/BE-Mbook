@@ -38,11 +38,7 @@ public class CartService implements CartServiceInterface {
 	@Override
 	@Transactional
 	public Cart save(CartDTO cartDTO) {
-		List<Author> listAu = AuthorRepo.findAll();
-		List<Product> listPro = productRepo.findAll();
-		List<Account> listAcc = accountRepo.findAll();
-		UUID idtemp = UUID.fromString(cartDTO.getIdProduct());
-		Product p = productRepo.findById(idtemp).get();
+		Product p = productRepo.findById(cartDTO.getIdProduct()).get();
 		Cart cartEntity = new Cart();
 		List<Cart> listCart = repo.findAll();
 		boolean checkCart = false;
@@ -73,12 +69,12 @@ public class CartService implements CartServiceInterface {
 			if(checkOut == true) {
 				cartEntity = new Cart();
 				Product productEntity = p;
-				productEntity.setQuantity(1);
+				productEntity.setQuantity(cartDTO.getQuantity());
 				Account accountEntity = accountRepo.findOneByUsername(cartDTO.getCreatedby());
 				cartEntity.setCreatedby(cartDTO.getCreatedby());
 				cartEntity.setAccountCart(accountEntity);
 				cartEntity.getListProduct().add(productEntity);
-				cartEntity.setQuantity(1);
+				cartEntity.setQuantity(cartDTO.getQuantity());
 				long total= 0;
 				if(productEntity.getPricePresent() != null) {
 					total += productEntity.getPricePresent() ;
@@ -90,9 +86,9 @@ public class CartService implements CartServiceInterface {
 				Product productEntity = p;
 				if(checkProduct != -1) {
 					cartEntity.getListProduct().get(checkProduct).setQuantity(
-							cartEntity.getListProduct().get(checkProduct).getQuantity()+ 1);
+							cartEntity.getListProduct().get(checkProduct).getQuantity()+ cartDTO.getQuantity());
 				}else {
-					productEntity.setQuantity(1);
+					productEntity.setQuantity(cartDTO.getQuantity());
 					cartEntity.getListProduct().add(productEntity);
 				}
 				long total= 0;
@@ -104,12 +100,12 @@ public class CartService implements CartServiceInterface {
 					}
 				}
 				cartEntity.setTotalPrice(total);
-				cartEntity.setQuantity(cartEntity.getQuantity() + 1);
+				cartEntity.setQuantity(cartEntity.getQuantity() + cartDTO.getQuantity());
 			}
 			
 		}else {
-			Product productEntity = productRepo.findById(idtemp).get();
-			productEntity.setQuantity(1);
+			Product productEntity = productRepo.findById(cartDTO.getIdProduct()).get();
+			productEntity.setQuantity(cartDTO.getQuantity());
 			List<Product> newList = new ArrayList<Product>();
 			newList.add(productEntity);
 			System.out.println("" );
@@ -119,7 +115,7 @@ public class CartService implements CartServiceInterface {
 			cartEntity.setCreatedby(cartDTO.getCreatedby());
 			cartEntity.setAccountCart(accountEntity);
 			cartEntity.setListProduct(newList);;
-			cartEntity.setQuantity(1);
+			cartEntity.setQuantity(cartDTO.getQuantity());
 			cartEntity.setCheckout(false);
 			long total= 0;
 			if(productEntity.getPricePresent() != null) {
