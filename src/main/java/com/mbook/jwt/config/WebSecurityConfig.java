@@ -47,9 +47,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/account/signin","/account/signup"
 						,"/poster/get","/poster/details/**"
 						,"/product/get/**","/product/details/**"
-						,"/order/get/**"
+						,"/order/get/**","/order/details/**"
 						,"/category/get/**"
-						,"/author/get/**","/author/details/**")
+						,"/author/get/**","/author/details/**"
+						)
 				.permitAll().
 				anyRequest().authenticated().and().
 				exceptionHandling().and().sessionManagement()

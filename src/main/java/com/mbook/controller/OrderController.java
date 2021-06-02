@@ -2,6 +2,8 @@ package com.mbook.controller;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +42,10 @@ public class OrderController {
 	public ResponseEntity<List<Orders>> list() {
 		return new ResponseEntity<>(service.ListAll(), HttpStatus.OK);
 	}
-
+	@GetMapping("/details/{idOrder}")
+	public ResponseEntity<Orders> getOneByID(@PathVariable UUID idOrder) {
+		return new ResponseEntity<>(service.get(idOrder), HttpStatus.OK);
+	}
 	@PostMapping("/upload")
 	public Orders Create(@Validated @RequestBody OrderDTO order, HttpServletRequest request) {
 		String authorizationHeader = request.getHeader("Authorization");
@@ -52,5 +58,14 @@ public class OrderController {
 			return null;
 		}
 
+	}
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable UUID id) {
+		try {
+			service.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);	
+		} catch (NoSuchElementException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

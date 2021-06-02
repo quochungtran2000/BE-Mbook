@@ -1,6 +1,8 @@
 package com.mbook.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +51,7 @@ public class PosterController {
 	}
 
 	@GetMapping("/details/{posterId}")
-	public ResponseEntity<Poster> get(@PathVariable Long posterId) {
+	public ResponseEntity<Poster> get(@PathVariable UUID posterId) {
 		return ResponseEntity.status(HttpStatus.OK).body(posterService.get(posterId));
 	}
 
@@ -63,14 +66,14 @@ public class PosterController {
 	
 
 	@PostMapping("/likes/{posterId}")
-	public ResponseEntity<Poster> likes(@PathVariable Long posterId, HttpServletRequest request) {
+	public ResponseEntity<Poster> likes(@PathVariable UUID posterId, HttpServletRequest request) {
 		// Tìm và chứng thực account qua token
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		Account acc = accRepo.findOneByUsername(username); // account
 		// ------------------------------------------------
-		Poster post = posterRepo.getOne(posterId);
+		Poster post = posterRepo.findById(posterId).get();
 		if (post.getListlike().contains(acc)) {
 			post.getListlike().remove(acc);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(posterRepo.save(post));
@@ -82,21 +85,20 @@ public class PosterController {
 	}
 
 	@PutMapping("/{id}/posters/{posterId}")
-	Poster addCategoryToPost(@PathVariable Long categoryId, @PathVariable Long posterId) {
+	Poster addCategoryToPost(@PathVariable Long categoryId, @PathVariable UUID posterId) {
 		Poster poster = posterRepo.findById(posterId).get();
 		CategoryEntity category = cateRepo.findById(categoryId).get();
 		poster.getCategoryId().add(category);
 		return posterRepo.save(poster);
 	}
 
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<?> delete(@PathVariable Long id) {
-//		try {
-//			posterRepo.delete(id);
-//			return new ResponseEntity<>(HttpStatus.OK);
-//		} catch (NoSuchElementException e) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//	}
-
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable UUID id) {
+		try {
+			posterService.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 }
