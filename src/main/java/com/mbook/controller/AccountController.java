@@ -42,7 +42,7 @@ public class AccountController {
 
 	@Autowired
 	private JwtUtil jwtUtil;
-	@GetMapping("")
+	@GetMapping("/get")
 	public List<Account> list() {
 		return AccService.ListAll();
 	}
@@ -54,22 +54,70 @@ public class AccountController {
 
 	// Đăng nhập
 	@PostMapping("/signin")
-	public Account login(@RequestBody User data) {
+	public ResponseEntity<Account> login(@RequestBody User data) {
 		List<Account> list = AccService.ListAll();
 		UUID accID = null;
+		boolean found = false;
 		for (Account account : list) {
-			if(account.getUsername().equals(data.getUsername())&& account.getPassword().equals(data.getPassword())) {
-//				System.out.println("Login Success");
-				account.setToken(jwtTokenUtil.generateTokenAcc(account));
-				accID = account.getId();
+			if(account.getUsername().equals(data.getUsername())
+					&& account.getPassword().equals(data.getPassword())
+					) {
+				if( account.isStatus() == true) {
+					account.setToken(jwtTokenUtil.generateTokenAcc(account));
+					accID = account.getId();
+					found = true;
+				}else {
+					accID = account.getId();
+					found = false; // Tìm được nhưng tài khoản bị khóa
+				}
+					
 			}
 		}
-		System.out.println("Login Account  :" + AccService.get(accID));
-		return AccService.get(accID);
+		if(accID != null) {
+			if(found == true) {
+				return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200 - OK
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304 - Vô Hiệu Hóa
+			}
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
+		}
+	}
+	@PostMapping("/dashboard/signin")
+	public ResponseEntity<Account> LoginDashboard(@RequestBody User data) {
+		List<Account> list = AccService.ListAll();
+		UUID accID = null;
+		boolean found = false;
+		for (Account account : list) {
+			if(account.getUsername().equals(data.getUsername())
+					&& account.getPassword().equals(data.getPassword())
+					) {
+				if( account.isRoleid() == true) {
+					account.setToken(jwtTokenUtil.generateTokenAcc(account));
+					accID = account.getId();
+					found = true;
+				}else {
+					accID = account.getId();
+					found = false; // Tìm được nhưng không đủ quyền
+				}
+					
+			}
+		}
+		if(accID != null) {
+			if(found == true) {
+				return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304
+			}
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
+		}
+		
+			
 	}
 	// Đăng kí
 	@PostMapping("/signup")
-	public String add(@RequestBody Account acc) {
+	public String SignIn(@RequestBody Account acc) {
 		try {
 			List<Account> list = AccService.ListAll();
 			for (Account account : list) {
@@ -84,7 +132,7 @@ public class AccountController {
 		}
 		return null;
 	}
-
+	
 	// Đổi mật khẩu
 	@PostMapping("/changepassword")
 	public ResponseEntity<Account> login(@RequestBody Password data,HttpServletRequest request) {
@@ -102,30 +150,25 @@ public class AccountController {
 			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //Mật khẩu cũ chưa đúng return 304
-			
 		}
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody Account accNew, @PathVariable UUID id) {
-		try {
-			Account accOld = AccService.get(id);
-			accOld.setUsername(accNew.getUsername());
-			accOld.setPassword(accNew.getPassword());
-			accOld.setFullname(accNew.getFullname());
-			accOld.setStatus(accNew.getStatus());
-			accOld.setRoleid(accNew.getRoleid());
-			accOld.setCreatedby(accNew.getCreatedby());
-			accOld.setCreateddate(accNew.getCreateddate());
-			accOld.setModifiedby(accNew.getModifiedby());
-			accOld.setModifieddate(accNew.getModifieddate());
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (NoSuchElementException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@PutMapping("/update/{id}")
+	public String update(@RequestBody Account accNew, @PathVariable UUID id,HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("Authorization");
+		String jwt = authorizationHeader.substring(7);
+		String username = jwtUtil.extractUsername(jwt);
+		if(AccRepo.findOneByUsername(username).isRoleid() == true) {
+			accNew.setModifiedby(username);
+			 AccRepo.save(accNew);
+			return "true";
+		}else {
+			return "false";
 		}
+		
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable UUID id) {
 		try {
 			AccService.delete(id);

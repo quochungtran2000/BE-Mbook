@@ -93,9 +93,6 @@ public class CartController {
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		boolean status = false;
-		System.out.println("");
-		System.out.println("quantity :" +  quantity);
-		System.out.println("id :" +  id);
 		List<Cart> listCart = service.ListAll();
 		Product pro = proRepo.findById(id).get();
 		for (Cart cart : listCart) {
@@ -104,6 +101,15 @@ public class CartController {
 			&& cart.getListProduct().indexOf(pro) != -1){
 				cart.setQuantity(cart.getQuantity() + Integer.parseInt(quantity));
 				cart.getListProduct().get(index).setQuantity(cart.getListProduct().get(index).getQuantity() + Integer.parseInt(quantity));
+				long total= 0;
+				for (Product product : cart.getListProduct()) {
+					if(product.getPricePresent() != null) {
+						total += product.getPricePresent() *  product.getQuantity();
+					}else {
+						total += product.getPriceOld() *  product.getQuantity();
+					}
+				}
+				cart.setTotalPrice(total);
 				cart.setModifiedby(username);	
 				repo.save(cart);
 				status = true;

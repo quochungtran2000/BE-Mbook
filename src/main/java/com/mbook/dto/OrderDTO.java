@@ -1,10 +1,11 @@
 package com.mbook.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class OrderDTO extends BaseDTO{
 	String address;
-	String discount;
+	UUID discount;
 	String fullname;
 	String methodPay;
 	String numberPhone;
@@ -21,7 +22,7 @@ public class OrderDTO extends BaseDTO{
 		super(createdby, createddate, modifiedby, modifieddate);
 		// TODO Auto-generated constructor stub
 	}
-	public OrderDTO(String address, String discount, String fullname, String methodPay, String numberPhone,
+	public OrderDTO(String address, UUID discount, String fullname, String methodPay, String numberPhone,
 			String idCart, Long total, Long totalMoneyProduct, int quantity, int ship) {
 		super();
 		this.address = address;
@@ -38,7 +39,7 @@ public class OrderDTO extends BaseDTO{
 	public String getAddress() {
 		return address;
 	}
-	public String getDiscount() {
+	public UUID getDiscount() {
 		return discount;
 	}
 	public String getFullname() {
@@ -68,7 +69,7 @@ public class OrderDTO extends BaseDTO{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public void setDiscount(String discount) {
+	public void setDiscount(UUID discount) {
 		this.discount = discount;
 	}
 	public void setFullname(String fullname) {
