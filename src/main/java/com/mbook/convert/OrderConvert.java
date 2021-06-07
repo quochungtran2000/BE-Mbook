@@ -11,7 +11,6 @@ public class OrderConvert {
 		orderDTO.setAddress(orderEntity.getAddress());
 		orderDTO.setFullname(orderEntity.getFullname());
 		orderDTO.setNumberPhone(orderEntity.getNumberPhone());
-		orderDTO.setDiscount(orderEntity.getDiscount());
 		orderDTO.setMethodPay(orderEntity.getMethodPay());
 		orderDTO.setQuantity(orderEntity.getQuantity());
 		orderDTO.setShip(orderEntity.getShip());
@@ -28,7 +27,6 @@ public class OrderConvert {
 		orderEntity.setAddress(orderDTO.getAddress());
 		orderEntity.setFullname(orderDTO.getFullname());
 		orderEntity.setNumberPhone(orderDTO.getNumberPhone());
-		orderEntity.setDiscount(orderDTO.getDiscount());
 		orderEntity.setMethodPay(orderDTO.getMethodPay());
 		orderEntity.setQuantity(orderDTO.getQuantity());
 		orderEntity.setShip(orderDTO.getShip());

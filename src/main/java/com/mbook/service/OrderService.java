@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.mbook.convert.OrderConvert;
 import com.mbook.dto.OrderDTO;
 import com.mbook.entity.Cart;
+import com.mbook.entity.Discount;
 import com.mbook.entity.Orders;
 import com.mbook.repository.CartRepository;
+import com.mbook.repository.DiscountRepository;
 import com.mbook.repository.OrderRepository;
 import com.mbook.repository.OrderServiceInterface;
 
@@ -23,6 +25,8 @@ public class OrderService implements OrderServiceInterface{
 	OrderConvert convert;
 	@Autowired 
 	CartRepository cartRepo;
+	@Autowired 
+	DiscountRepository discountRepo;
 	@Override
 	public List<Orders> ListAll() {
 		return repo.findAll();
@@ -41,9 +45,16 @@ public class OrderService implements OrderServiceInterface{
 	@Override
 	public Orders save(OrderDTO orderDTO) {
 		Orders orderEntity =new Orders();
+		Discount discount = new Discount();
 		Cart cart = cartRepo.findById( UUID.fromString(orderDTO.getIdCart())).get();
+		if(orderDTO.getDiscount() != null) {
+			discount = discountRepo.findById(orderDTO.getDiscount()).get();
+		}else {
+			discount = null;
+		}
 		orderEntity = convert.toEntity(orderDTO);
 		orderEntity.setBill(cart);
+		orderEntity.setCodeDiscount(discount);
 		return repo.save(orderEntity);
 	}
 	

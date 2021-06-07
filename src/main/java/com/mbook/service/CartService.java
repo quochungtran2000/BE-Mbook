@@ -52,18 +52,14 @@ public class CartService implements CartServiceInterface {
 					cartEntity = cart;
 					//Product isExist
 					checkProduct = cart.getListProduct().indexOf(p);
-					if(cart.isCheckout() == true) {
-						checkOut = true;
-					}else {
+					if(cart.isCheckout() == false) {
 						checkOut = false;
+					}else {
+						checkOut = true;
 					}
 				}
 			}	
 		}
-		
-		System.out.println("" );
-		System.out.println("index Product: " + checkProduct);
-		System.out.println("status cart: " + checkCart);
 		//Handle Cart with status
 		if(checkCart == true) {
 			if(checkOut == true) {
@@ -75,13 +71,6 @@ public class CartService implements CartServiceInterface {
 				cartEntity.setAccountCart(accountEntity);
 				cartEntity.getListProduct().add(productEntity);
 				cartEntity.setQuantity(cartDTO.getQuantity());
-				long total= 0;
-				if(productEntity.getPricePresent() != null) {
-					total += productEntity.getPricePresent() ;
-				}else {
-					total += productEntity.getPriceOld();
-				}
-				cartEntity.setTotalPrice(total);
 			}else {
 				Product productEntity = p;
 				if(checkProduct != -1) {
@@ -91,15 +80,6 @@ public class CartService implements CartServiceInterface {
 					productEntity.setQuantity(cartDTO.getQuantity());
 					cartEntity.getListProduct().add(productEntity);
 				}
-				long total= 0;
-				for (Product product : cartEntity.getListProduct()) {
-					if(product.getPricePresent() != null) {
-						total += product.getPricePresent() *  product.getQuantity();
-					}else {
-						total += product.getPriceOld() *  product.getQuantity();
-					}
-				}
-				cartEntity.setTotalPrice(total);
 				cartEntity.setQuantity(cartEntity.getQuantity() + cartDTO.getQuantity());
 			}
 			
@@ -107,27 +87,23 @@ public class CartService implements CartServiceInterface {
 			Product productEntity = productRepo.findById(cartDTO.getIdProduct()).get();
 			productEntity.setQuantity(cartDTO.getQuantity());
 			List<Product> newList = new ArrayList<Product>();
-			newList.add(productEntity);
-			System.out.println("" );
-			System.out.println("name Product: " + productEntity.getName());
-			System.out.println("id : " + productEntity.getId());
+			newList.add(productEntity);	
 			Account accountEntity = accountRepo.findOneByUsername(cartDTO.getCreatedby());
 			cartEntity.setCreatedby(cartDTO.getCreatedby());
 			cartEntity.setAccountCart(accountEntity);
 			cartEntity.setListProduct(newList);;
 			cartEntity.setQuantity(cartDTO.getQuantity());
 			cartEntity.setCheckout(false);
-			long total= 0;
-			if(productEntity.getPricePresent() != null) {
-				total += productEntity.getPricePresent() ;
-			}else {
-				total += productEntity.getPriceOld();
-			}
-			cartEntity.setTotalPrice(total);
 		}
-		System.out.println("" );
-		System.out.println("id cart: " + cartEntity.getId());
-		System.out.println("length cart: " + cartEntity.getListProduct().size());
+		long total= 0;
+		for (Product product : cartEntity.getListProduct()) {
+			if(product.getPricePresent() != null) {
+				total += product.getPricePresent() *  product.getQuantity();
+			}else {
+				total += product.getPriceOld() *  product.getQuantity();
+			}
+		}
+		cartEntity.setTotalPrice(total);
 		return repo.save(cartEntity);	
 	}
 
@@ -138,7 +114,6 @@ public class CartService implements CartServiceInterface {
 
 	@Override
 	public void delete(UUID id) {
-		
 		repo.deleteById(id);	
 	}
 	public void deleteItem(UUID id, String username) {
@@ -160,8 +135,11 @@ public class CartService implements CartServiceInterface {
 		if(checkCart == true) {
 			Product productEntity = productRepo.findById(id).get();
 			if(checkProduct != -1) {
-				cartEntity.setQuantity(cartEntity.getQuantity() - productEntity.getQuantity());
-				cartEntity.getListProduct().remove(checkProduct);
+				if(cartEntity.getQuantity() > 0) {
+					cartEntity.setQuantity(cartEntity.getQuantity() - productEntity.getQuantity());
+					cartEntity.getListProduct().remove(checkProduct);
+				}
+				
 			}
 			long total= 0;
 			for (Product product : cartEntity.getListProduct()) {

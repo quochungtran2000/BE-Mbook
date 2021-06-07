@@ -1,14 +1,13 @@
 package com.mbook.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "discount")
@@ -20,22 +19,25 @@ public class Discount extends BaseEntity{
 	@Column
 	Long money;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "codeDiscount")
+	List<Orders> idOrders;
 	
-	@ManyToMany
-    @JoinTable(
-            name = "DiscountDetails",
-            joinColumns = @JoinColumn(name = "orders_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "discount_id",referencedColumnName = "id")
-    )
-	private List<Orders> listDiscount = new ArrayList<Orders>();
-	public Discount() {
-		super();
-	}
-	public Discount(boolean type, String name, Long money) {
+	public Discount(boolean type, String name, Long money, List<Orders> idOrders) {
 		super();
 		this.type = type;
 		this.name = name;
 		this.money = money;
+		this.idOrders = idOrders;
+	}
+	public List<Orders> getIdOrders() {
+		return idOrders;
+	}
+	public void setIdOrders(List<Orders> idOrders) {
+		this.idOrders = idOrders;
+	}
+	public Discount() {
+		super();
 	}
 	public boolean isType() {
 		return type;

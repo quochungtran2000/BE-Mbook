@@ -3,6 +3,7 @@ package com.mbook.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,8 +19,6 @@ public class Orders extends BaseEntity {
 	@Column
 	String numberPhone;
 	@Column
-	String discount;
-	@Column
 	Long total;
 	@Column
 	Long totalMoneyProduct;
@@ -31,25 +30,29 @@ public class Orders extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name = "cart_id",referencedColumnName = "id")	
 	Cart bill;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "discount_id",referencedColumnName = "id")
+	Discount codeDiscount;
+	
 	public Orders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Orders(String address, String fullname, String methodPay, String numberPhone, String discount, Long total,
-			Long totalMoneyProduct, int quantity, int ship, Cart bill) {
+	public Orders(String address, String fullname, String methodPay, String numberPhone, Long total,
+			Long totalMoneyProduct, int quantity, int ship, Cart bill, Discount codeDiscount) {
 		super();
 		this.address = address;
 		this.fullname = fullname;
 		this.methodPay = methodPay;
 		this.numberPhone = numberPhone;
-		this.discount = discount;
 		this.total = total;
 		this.totalMoneyProduct = totalMoneyProduct;
 		this.quantity = quantity;
 		this.ship = ship;
 		this.bill = bill;
+		this.codeDiscount = codeDiscount;
 	}
 
 	public String getAddress() {
@@ -66,10 +69,6 @@ public class Orders extends BaseEntity {
 
 	public String getNumberPhone() {
 		return numberPhone;
-	}
-
-	public String getDiscount() {
-		return discount;
 	}
 
 	public Long getTotal() {
@@ -92,6 +91,10 @@ public class Orders extends BaseEntity {
 		return bill;
 	}
 
+	public Discount getCodeDiscount() {
+		return codeDiscount;
+	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
@@ -106,10 +109,6 @@ public class Orders extends BaseEntity {
 
 	public void setNumberPhone(String numberPhone) {
 		this.numberPhone = numberPhone;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
 	}
 
 	public void setTotal(Long total) {
@@ -131,6 +130,11 @@ public class Orders extends BaseEntity {
 	public void setBill(Cart bill) {
 		this.bill = bill;
 	}
+
+	public void setCodeDiscount(Discount codeDiscount) {
+		this.codeDiscount = codeDiscount;
+	}
+
 	
 	
 }

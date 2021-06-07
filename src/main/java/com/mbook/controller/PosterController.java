@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbook.dto.PosterDTO;
+import com.mbook.dto.ProductDTO;
 import com.mbook.entity.Account;
 import com.mbook.entity.CategoryEntity;
 import com.mbook.entity.Poster;
@@ -84,12 +85,13 @@ public class PosterController {
 
 	}
 
-	@PutMapping("/{id}/posters/{posterId}")
-	Poster addCategoryToPost(@PathVariable Long categoryId, @PathVariable UUID posterId) {
-		Poster poster = posterRepo.findById(posterId).get();
-		CategoryEntity category = cateRepo.findById(categoryId).get();
-		poster.getCategoryId().add(category);
-		return posterRepo.save(poster);
+	@PutMapping("/update/{posterId}")
+	Poster addCategoryToPost(@RequestBody Poster dataUpdate,@PathVariable UUID posterId,HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("Authorization");
+		String jwt = authorizationHeader.substring(7);
+		String username = jwtUtil.extractUsername(jwt);
+		dataUpdate.setModifiedby(username);
+		return posterRepo.save(dataUpdate);
 	}
 
 	@DeleteMapping("/delete/{id}")
