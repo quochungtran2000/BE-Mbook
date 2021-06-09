@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -29,7 +31,7 @@ public class Poster extends BaseEntity {
 	private String urlImage;
 
 	
-	
+//	@JsonIgnore
 	@ManyToMany
     @JoinTable(
             name = "listpost_like",
@@ -38,6 +40,7 @@ public class Poster extends BaseEntity {
     )
 	List<Account> listlike = new ArrayList<Account>();
 	
+//	@JsonIgnore
 	@ManyToMany
     @JoinTable(
             name = "category_enrolled",

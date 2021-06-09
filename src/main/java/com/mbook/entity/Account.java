@@ -22,8 +22,10 @@ public class Account extends BaseEntity {
 	private boolean roleid;
 	private String token;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "listlike", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Poster> postlike = new ArrayList<Poster>();
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "accountCart")
 	List<Cart> cart;

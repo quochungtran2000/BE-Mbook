@@ -22,10 +22,11 @@ public class Cart extends BaseEntity {
 	Long totalPrice;
 	@Column
 	boolean checkout;
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "account_id",referencedColumnName = "id")	
 	Account accountCart;
-	
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "bill")
