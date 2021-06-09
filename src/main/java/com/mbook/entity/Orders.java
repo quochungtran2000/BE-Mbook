@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "orders")
 public class Orders extends BaseEntity {
@@ -26,7 +28,7 @@ public class Orders extends BaseEntity {
 	int quantity;
 	@Column
 	int ship;
-	
+
 	@OneToOne
 	@JoinColumn(name = "cart_id",referencedColumnName = "id")	
 	Cart bill;
