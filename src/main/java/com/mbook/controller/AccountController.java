@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,7 @@ public class AccountController {
 
 	@Autowired
 	private JwtUtil jwtUtil;
+	
 	@GetMapping("/get")
 	public List<Account> list() {
 		return AccService.ListAll();
@@ -58,6 +61,7 @@ public class AccountController {
 		List<Account> list = AccService.ListAll();
 		UUID accID = null;
 		boolean found = false;
+		
 		for (Account account : list) {
 			if(account.getUsername().equals(data.getUsername())
 					&& account.getPassword().equals(data.getPassword())
@@ -146,7 +150,7 @@ public class AccountController {
 				return new ResponseEntity<>(HttpStatus.CONFLICT); // Mật khẩu mới == mật khẩu cũ return 409
 			}else {
 				acc.setPassword(data.getPasswordNew());
-				return ResponseEntity.status(HttpStatus.OK).body(AccRepo.save(acc)); //200
+				return ResponseEntity.status(HttpStatus.OK).body(AccService.save(acc)); //200
 			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //Mật khẩu cũ chưa đúng return 304

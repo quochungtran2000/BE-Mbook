@@ -7,7 +7,8 @@ import com.mbook.entity.Account;
 
 public interface AccountServiceInterface {
 	public List<Account> ListAll();
-	public void save(Account acc);
+	public Account save(Account acc);
 	public Account get(UUID id) ;
 	public void delete(UUID id) ;
+	public String Encrypt(String password);
 }
