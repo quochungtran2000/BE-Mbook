@@ -16,11 +16,11 @@ public class Author extends BaseEntity{
 	private String name;
 	@Column
 	private String age;
-	@Column
+	@Column(columnDefinition="TEXT")
 	private String slogan;
 	@Column
 	private String image;
-	@Column
+	@Column(columnDefinition="TEXT")
 	private String description;
 	
 	@JsonIgnore

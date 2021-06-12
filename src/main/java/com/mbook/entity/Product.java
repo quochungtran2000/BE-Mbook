@@ -27,9 +27,9 @@ public class Product extends BaseEntity{
 	private String imageAf;
 	@Column
 	private int quantity;
-	@Column
+	@Column(columnDefinition="TEXT")
 	private String thumbnails;
-	@Column
+	@Column(columnDefinition="TEXT")
 	private String description;
 	@Column
 	private int rating;
