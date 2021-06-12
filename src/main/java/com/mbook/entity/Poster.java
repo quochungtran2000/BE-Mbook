@@ -17,14 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "poster")
 public class Poster extends BaseEntity {
-
 	@Column(name = "title")
 	private String title;
 
-	@Column(name = "sub")
+	@Column(name = "sub",columnDefinition="TEXT")
 	private String sub;
 
-	@Column(name = "content")
+	@Column(name = "content",columnDefinition="TEXT")
 	private String content;
 
 	@Column(name = "urlImage")
