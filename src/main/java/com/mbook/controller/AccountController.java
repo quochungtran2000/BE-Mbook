@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mbook.entity.Account;
 import com.mbook.entity.Password;
+import com.mbook.entity.Poster;
 import com.mbook.entity.User;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.AccountRepository;
@@ -54,72 +55,78 @@ public class AccountController {
 	public Account get(@PathVariable UUID id) {
 		return AccService.get(id);
 	}
+	@GetMapping("/details/{id}")
+	public ResponseEntity<Account> getAccount(@PathVariable UUID id) {
+		return ResponseEntity.status(HttpStatus.OK).body(AccService.get(id));
+	}
 
 	// Đăng nhập
-	@PostMapping("/signin")
-	public ResponseEntity<Account> login(@RequestBody User data) {
-		String passwordEn = AccService.Encrypt(data.getPassword());
-		List<Account> list = AccService.ListAll();
-		UUID accID = null;
-		boolean found = false;
-		for (Account account : list) {
-			if(account.getUsername().equals(data.getUsername())
-					&& account.getPassword().equals(passwordEn)
-					) {
-				if( account.isStatus() == true) {
-					account.setToken(jwtTokenUtil.generateTokenAcc(account));
-					accID = account.getId();
-					found = true;
-				}else {
-					accID = account.getId();
-					found = false; // Tìm được nhưng tài khoản bị khóa
+		@PostMapping("/signin")
+		public ResponseEntity<Account> login(@RequestBody User data) {
+			String passwordEn = AccService.Encrypt(data.getPassword());
+			List<Account> list = AccService.ListAll();
+			UUID accID = null;
+			boolean found = false;
+			for (Account account : list) {
+				if(account.getUsername()!= null) {
+					if(account.getUsername().equals(data.getUsername())
+							&& account.getPassword().equals(passwordEn)
+							) {
+						if( account.isStatus() == true) {
+							account.setToken(jwtTokenUtil.generateTokenAcc(account));
+							accID = account.getId();
+							found = true;
+						}else {
+							accID = account.getId();
+							found = false; // Tìm được nhưng tài khoản bị khóa
+						}
+							
+					}
 				}
-					
 			}
-		}
-		if(accID != null) {
-			if(found == true) {
-				return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200 - OK
-			}else {
-				return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304 - Vô Hiệu Hóa
-			}
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
-		}
-	}
-	@PostMapping("/dashboard/signin")
-	public ResponseEntity<Account> LoginDashboard(@RequestBody User data) {
-		String passwordEn = AccService.Encrypt(data.getPassword());
-		List<Account> list = AccService.ListAll();
-		UUID accID = null;
-		boolean found = false;
-		for (Account account : list) {
-			if(account.getUsername().equals(data.getUsername())
-					&& account.getPassword().equals(passwordEn)
-					) {
-				if( account.isRoleid() == true) {
-					account.setToken(jwtTokenUtil.generateTokenAcc(account));
-					accID = account.getId();
-					found = true;
+			if(accID != null) {
+				if(found == true) {
+					return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200 - OK
 				}else {
-					accID = account.getId();
-					found = false; // Tìm được nhưng không đủ quyền
+					return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304 - Vô Hiệu Hóa
 				}
-					
-			}
-		}
-		if(accID != null) {
-			if(found == true) {
-				return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200
 			}else {
-				return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
 			}
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
 		}
-		
+		@PostMapping("/dashboard/signin")
+		public ResponseEntity<Account> LoginDashboard(@RequestBody User data) {
+			String passwordEn = AccService.Encrypt(data.getPassword());
+			List<Account> list = AccService.ListAll();
+			UUID accID = null;
+			boolean found = false;
+			for (Account account : list) {
+				if(account.getUsername().equals(data.getUsername())
+						&& account.getPassword().equals(passwordEn)
+						) {
+					if( account.isRoleid() == true) {
+						account.setToken(jwtTokenUtil.generateTokenAcc(account));
+						accID = account.getId();
+						found = true;
+					}else {
+						accID = account.getId();
+						found = false; // Tìm được nhưng không đủ quyền
+					}
+						
+				}
+			}
+			if(accID != null) {
+				if(found == true) {
+					return ResponseEntity.status(HttpStatus.OK).body(AccService.get(accID)); // 200
+				}else {
+					return new ResponseEntity<>(HttpStatus.NOT_MODIFIED); //304
+				}
+			}else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AccService.get(accID)); // 200
+			}
 			
-	}
+				
+		}
 	// Đăng kí
 	@PostMapping("/signup")
 	public String SignIn(@RequestBody Account acc) {
@@ -163,17 +170,14 @@ public class AccountController {
 
 	@PutMapping("/update/{id}")
 	public String update(@RequestBody Account accNew, @PathVariable UUID id,HttpServletRequest request) {
-		String passwordEn = AccService.Encrypt(accNew.getPassword());
 		String authorizationHeader = request.getHeader("Authorization");
 		String jwt = authorizationHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
 		if(AccRepo.findOneByUsername(username).isRoleid() == true) {
-			if(accNew.getPassword().equals(AccRepo.findById(accNew.getId()).get().getPassword())) {
-			}else {
-				accNew.setPassword(passwordEn);
-			}
+			Account acc = AccRepo.findById(id).get();
+			acc.setFullname(accNew.getFullname());
 			accNew.setModifiedby(username);
-			 AccService.save(accNew);
+			AccRepo.save(acc);
 			return "true";
 		}else {
 			return "false";
