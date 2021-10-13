@@ -139,6 +139,7 @@ public class AccountController {
 				}
 			}
 			acc.setPassword(passwordEn);
+			acc.setStatus(true);
 			AccService.save(acc);
 			return "Đăng Ký Thành Công";
 		} catch (NoSuchElementException e) {
