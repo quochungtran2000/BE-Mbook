@@ -21,7 +21,7 @@ import com.mbook.entity.Author;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.AuthorRepository;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin()
 @RequestMapping("/author")
 @RestController
 public class AuthorController {

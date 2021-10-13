@@ -30,7 +30,7 @@ import com.mbook.repository.CategoryRepository;
 import com.mbook.repository.PosterRepository;
 import com.mbook.service.PosterService;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin()
 @RestController
 @RequestMapping("/poster")
 public class PosterController {

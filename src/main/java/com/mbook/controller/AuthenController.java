@@ -18,7 +18,7 @@ import com.mbook.jwt.model.AuthenticationResponse;
 import com.mbook.jwt.util.JwtUtil;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin()
 public class AuthenController {
 	@Autowired
 	private AuthenticationManager authenticationManager;

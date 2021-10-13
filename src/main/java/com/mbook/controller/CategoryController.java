@@ -20,7 +20,7 @@ import com.mbook.entity.CategoryEntity;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.CategoryRepository;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin()
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
