@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mbook.entity.Account;
 
+@Repository
 public interface AccountRepository extends JpaRepository<Account, UUID>{
 	Account findOneByUsername(String username);
 //	 @Modifying
