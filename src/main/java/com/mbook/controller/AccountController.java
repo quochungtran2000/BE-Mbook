@@ -29,7 +29,7 @@ import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.AccountRepository;
 import com.mbook.service.AccountService;
 
-@CrossOrigin()
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/account")
 public class AccountController {

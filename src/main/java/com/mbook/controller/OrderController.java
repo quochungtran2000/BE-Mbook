@@ -26,7 +26,7 @@ import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.OrderRepository;
 import com.mbook.service.OrderService;
 
-@CrossOrigin()
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/order")
 public class OrderController {

@@ -19,7 +19,7 @@ import com.mbook.entity.Discount;
 import com.mbook.jwt.util.JwtUtil;
 import com.mbook.repository.DiscountRepository;
 
-@CrossOrigin()
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/discount")
 public class DiscountController {

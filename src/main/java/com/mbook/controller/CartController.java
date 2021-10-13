@@ -36,7 +36,7 @@ import com.mbook.repository.ProductRepository;
 import com.mbook.service.CartService;
 import com.mbook.service.ProductService;
 
-@CrossOrigin()
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/cart")
 @RestController
 public class CartController {

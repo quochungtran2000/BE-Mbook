@@ -32,7 +32,7 @@ import com.mbook.repository.CategoryRepository;
 import com.mbook.repository.ProductRepository;
 import com.mbook.service.ProductService;
 
-@CrossOrigin()
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/product")
 @RestController
 public class ProductController {
